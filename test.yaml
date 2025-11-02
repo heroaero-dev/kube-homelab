@@ -1,17 +1,24 @@
-LD_DB_USER: aero
-LD_DB_PASSWORD: aero
+apiVersion: v1
+data:
+    LD_SUPERUSER_NAME: ENC[AES256_GCM,data:ol6vb3GGXfU=,iv:RKDQdXq2pUFsY+H8V5/6YRGyvnnngSJc8kFHodOvtgA=,tag:uh28C3MZ1Injcc1eMMEwZw==,type:str]
+    LD_SUPERUSER_PASSWORD: ENC[AES256_GCM,data:sT5Dw/WwxE4=,iv:mB9yiJmSJmk84qmHyFgK1Tl2MRajKOReIT0h+8qqhOw=,tag:Nc7S5Bx/enYyVh6vsYmpqw==,type:str]
+kind: Secret
+metadata:
+    creationTimestamp: null
+    name: test25
+    namespace: linkding25
 sops:
     age:
         - recipient: age1y6h6gh3memsng0n3465xunvrzd0des7fkkkjycsf7y8leqg5dspssa63fd
           enc: |
             -----BEGIN AGE ENCRYPTED FILE-----
-            YWdlLWVuY3J5cHRpb24ub3JnL3YxCi0+IFgyNTUxOSBKbktCenpaTlBjYi8vNE4y
-            bnk0UGs1eG1rVVJvRUpLNWt3bzRablNNZkFnCkFweUNnU0FlbVhNekV2NThOY21y
-            dkVVNllnUmlGVUExT011K2RVYUU3UFUKLS0tIHBoaTdxL1VPaS9KUHJFMmFGTUEx
-            b0F4M0JtNi9nVVBJbTdkVjU2cG5pL2MKyjfza72sxTMEAn5lE9YsKoNfhlRjDz5Z
-            bMDOf9u551F8kkznZFXDrFHwZGSSI1M4imbA+K2XE0BIqRskFbJ9yg==
+            YWdlLWVuY3J5cHRpb24ub3JnL3YxCi0+IFgyNTUxOSBkZ0tJejk1Tm8xZWZqVytK
+            Tk9JSWlNSnJJN212TW9UNmF2R1l2d3d1TVZzCkVUOUkzTmxpdE1oSWZPSkJQd2c2
+            ZHpYMWVxbFJkMzYwUEtaRWU5NTVOem8KLS0tIFplSTVDWFFZSEZTcStId2hDWklE
+            YUwxb2pIS0VYTmptc1RaWEpwTHFDYzAKaFQ4AR1wRfnc98NPQ+P9al5TkASvgtMr
+            a2Htcjami2M7nS6cuKDPBCpdAnNQ1mk/Bompz1eleV1XKiTqHD1wZA==
             -----END AGE ENCRYPTED FILE-----
-    lastmodified: "2025-11-02T05:00:50Z"
-    mac: ENC[AES256_GCM,data:obZLZ8XCx/TPwnGdzpe/TgN9ii2QhZ4/RZ5ZZixlLr9jgo3R0Ar+ctCJZwLndhlh8bFN3b5SZ8N+9q6KxiDOyPeNQxnyV/wGWNen9I/CVNpwiCedpIRHHHs+KZLaFW9tULexz/6lFRu4vhqUqxfcvWaXJiVGDKmW8zJHxLO75Fo=,iv:YZrALNWeA/Cd25zXyuOVai+tpPvH+TtuasAIF8szCio=,tag:j2ll2RuOPqTu2ULktjGPLQ==,type:str]
+    lastmodified: "2025-11-02T06:28:05Z"
+    mac: ENC[AES256_GCM,data:gYFFaPEjHyJuGZHKRcqPDvxXoaMwOziTcw2qmyX1HLkasmKKu7FHX8ZVjO8FtzCquv7mYEt65fyH8XwYngLmyHbWOw2Eu+x9S4A+4GYzjwlOri+guL6xdLfbSSSTvRyiAy9khPMknEJRviXyyOdnRbQB3V/1S4QfmODff0xR7is=,iv:cDurbhg9CpxW+2eX+kn7FHKFVHxeqcoPXhzB8cJvQvQ=,tag:AoBuBgpc+ZPE6+InoVWEWw==,type:str]
     encrypted_regex: ^(data|stringData)$
     version: 3.10.2
