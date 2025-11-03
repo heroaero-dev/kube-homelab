@@ -15,7 +15,7 @@ spec:
     spec:
       containers:
         - name: linkding25
-          image: sissbruecker/linkding:1.41.0-plus-alpine
+          image: sissbruecker/linkding:1.44.1-plus-alpine
           ports:
             - containerPort: 9090
           volumeMounts:
