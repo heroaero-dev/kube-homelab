@@ -2,8 +2,8 @@ apiVersion: apps/v1
 kind: Deployment 
 metadata:
   name: cloudflared
-  annotations:
-    reloader.stakater.com/auto: "true"
+    #annotations:
+    #reloader.stakater.com/auto: "true"
 spec:
   replicas: 2
   selector:
@@ -21,7 +21,7 @@ spec:
             value: "65532 65532"
       containers:
         - name: cloudflared
-          image: ghcr.io/cloudflare/cloudflared:latest
+          image: cloudflare/cloudflared:latest
           envFrom:
             - secretRef:
                 name: cloudflared-secret 
