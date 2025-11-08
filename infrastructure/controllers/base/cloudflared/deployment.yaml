@@ -64,5 +64,5 @@ data:
   config.yaml: |
     ingress:
       - hostname: link.heroaero.net
-        service: http://linkding25.linkding25.svc.cluster.local:80
+        service: http://linkding25.linkding.svc.cluster.local:80
       - service: http_status:404
