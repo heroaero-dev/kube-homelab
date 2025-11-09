@@ -16,18 +16,18 @@ spec:
       interval: 10m
   values:
     replicaCount: 2
-      #hostname: ranch.heroaero.net
-      #ingress:
-      # enabled: true
-      #ingressClassName: traefik
-      #pathType: ImplementationSpecific
-      #path: "/"
-      #servicePort: 80
+      hostname: ranch.heroaero.net
+      ingress:
+        enabled: true
+        ingressClassName: traefik
+        pathType: ImplementationSpecific
+        path: "/"
+        servicePort: 80
 
         #extraAnnotations:
         #cert-manager.io/cluster-issuer: letsencrypt-prod
         #nginx.ingress.kubernetes.io/force-ssl-redirect: "true"
 
-      #tls:
+      tls:
         #source: letsEncrypt
         #secretName: tls-rancher-ingress
