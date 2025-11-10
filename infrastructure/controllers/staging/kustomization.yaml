@@ -6,3 +6,4 @@ resources:
   - stakater-reloader
   - cert-manager
   - ci-access
+  - external-secrets
