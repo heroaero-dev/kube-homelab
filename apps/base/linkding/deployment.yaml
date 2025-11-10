@@ -13,9 +13,15 @@ spec:
       labels:
         app: linkding25
     spec:
+      securityContext:
+        fsGroup: 33 # www-data group ID
+        runAsUser: 33 # www-data user ID
+        runAsGroup: 33 # www-data group ID
       containers:
         - name: linkding25
           image: sissbruecker/linkding:1.44.1-plus-alpine
+          securityContext:
+            allowPrivilegeEscalation: False
           ports:
             - containerPort: 9090
           volumeMounts:
