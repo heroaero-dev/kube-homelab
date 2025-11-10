@@ -5,3 +5,4 @@ resources:
   - cloudflared
   - stakater-reloader
   - cert-manager
+  - ci-access
