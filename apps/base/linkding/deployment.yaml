@@ -29,7 +29,7 @@ spec:
               name: linkding-volume
           envFrom:
             - secretRef:
-                name: test25
+                name: linkding-secret
       volumes:
         - name: linkding-volume
           persistentVolumeClaim:
