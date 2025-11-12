@@ -12,6 +12,10 @@ spec:
         kind: HelmRepository
         name: cert-manager
       version: v1.19.1
+  install:
+    crds: Create
+  upgrade:
+    crds: UpgradeReplace    
   interval: 1m0s
   values:
     installCRDs: true
