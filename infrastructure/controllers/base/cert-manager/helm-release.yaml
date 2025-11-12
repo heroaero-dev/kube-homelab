@@ -15,7 +15,7 @@ spec:
   install:
     crds: Create
   upgrade:
-    crds: UpgradeReplace    
+    crds: CreateReplace    
   interval: 1m0s
   values:
     installCRDs: true
