@@ -4,7 +4,7 @@ metadata:
   name: keda
 spec:
   interval: 1h
-  path: ./apps/keda/keda/app
+  path: ./apps/keda/keda/apps
   prune: true
   sourceRef:
     kind: GitRepository
