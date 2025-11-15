@@ -4,7 +4,7 @@ metadata:
   name: keda
 spec:
   interval: 1h
-  path: ./apps/keda/overlays/staging
+  path: ./apps/keda/keda/app
   prune: true
   sourceRef:
     kind: GitRepository
