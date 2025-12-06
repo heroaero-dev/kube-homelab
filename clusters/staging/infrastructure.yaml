@@ -9,8 +9,9 @@ spec:
   retryInterval: 2m
   timeout: 5m
   sourceRef:
-    kind: ExternalArtifact
-    name: infrastructure
+    kind: GitRepository
+    name: flux-system
+    namespace: flux-system
   path: ./controllers/staging
   prune: true
   wait: true
