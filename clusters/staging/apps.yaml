@@ -11,6 +11,6 @@ spec:
     kind: GitRepository
     name: flux-system
     namespace: flux-system
-  path: ./staging
+  path: ./apps/staging
   prune: true
   wait: true
