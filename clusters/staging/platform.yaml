@@ -1,80 +1,33 @@
-apiVersion: kustomize.toolkit.fluxcd.io/v1
-kind: Kustomization
-metadata:
-  name: external-secrets
-  namespace: flux-system
-spec:
-  interval: 30m0s
-  # dependsOn:
-  # - name: infra-configs
-  retryInterval: 1m 
-  timeout: 5m 
-  sourceRef:
-    kind: GitRepository
-    name: flux-system 
-  path: ./platform/external-secrets/overlays/staging
-  prune: true
-  decryption:
-    provider: sops
-    secretRef:
-      name: sops-age
 ---
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
-  name: longhorn
+  name: infra-controllers
   namespace: flux-system
 spec:
-  interval: 30m0s
-  # dependsOn:
-  # - name: infra-configs
-  retryInterval: 1m
+  interval: 1h
+  retryInterval: 2m
   timeout: 5m
   sourceRef:
-    kind: GitRepository
-    name: flux-system
-  path: ./platform/longhorn/overlays/staging
+    kind: ExternalArtifact
+    name: infrastructure
+  path: ./controllers
   prune: true
+  wait: true
 ---
 apiVersion: kustomize.toolkit.fluxcd.io/v1
 kind: Kustomization
 metadata:
-  name: cloudflared
+  name: infra-configs
   namespace: flux-system
 spec:
-  interval: 30m0s
-  # dependsOn:
-  # - name: infra-configs
-  retryInterval: 1m
+  dependsOn:
+    - name: infra-controllers
+  interval: 1h
+  retryInterval: 2m
   timeout: 5m
   sourceRef:
-    kind: GitRepository
-    name: flux-system
-  path: ./platform/cloudflared/overlays/staging
+    kind: ExternalArtifact
+    name: infrastructure
+  path: ./configs
   prune: true
-  decryption:
-    provider: sops
-    secretRef:
-      name: sops-age
----
-apiVersion: kustomize.toolkit.fluxcd.io/v1
-kind: Kustomization
-metadata:
-  name: cluster-secret-store
-  namespace: flux-system
-spec:
-  interval: 30m0s
-  # dependsOn:
-  # - name: infra-configs
-  retryInterval: 1m
-  timeout: 5m
-  sourceRef:
-    kind: GitRepository
-    name: flux-system
-  path: ./platform/cluster-secret-store/overlays/staging
-  prune: true
-  decryption:
-    provider: sops
-    secretRef:
-      name: sops-age
-
