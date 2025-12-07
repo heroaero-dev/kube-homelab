@@ -1,0 +1,44 @@
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: cilium
+spec:
+  chart:
+    spec:
+      chart: cilium
+      version: "1.18.4"
+      sourceRef:
+        kind: HelmRepository
+        name: cilium
+        namespace: kube-system
+  interval: 1h
+  values:
+    cgroup:
+      automount:
+        enabled: false
+      hostRoot: /sys/fs/cgroup
+    dashboards:
+      enabled: true
+    hubble:
+      enabled: false   # can turn on later
+    # IMPORTANT: update these two
+    k8sServiceHost: 10.6.6.117
+    k8sServicePort: 6443
+    kubeProxyReplacement: true
+    localRedirectPolicy: false
+
+    operator:
+      dashboards:
+        enabled: true
+      prometheus:
+        enabled: true
+        serviceMonitor:
+          enabled: true
+          trustCRDsExist: true
+      replicas: 2
+      rollOutPods: true
+    prometheus:
+      enabled: true
+      serviceMonitor:
+        enabled: true
+        trustCRDsExist: true
