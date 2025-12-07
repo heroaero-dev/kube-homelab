@@ -11,7 +11,7 @@ spec:
       sourceRef:
         kind: HelmRepository
         name: kube-prometheus-stack
-        namespace: observability
+        namespace: monitoring
       interval: 12h
 
   install:
