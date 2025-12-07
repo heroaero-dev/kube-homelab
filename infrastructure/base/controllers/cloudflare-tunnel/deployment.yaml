@@ -1,0 +1,60 @@
+apiVersion: apps/v1
+kind: Deployment 
+metadata:
+  name: cloudflared
+  annotations:
+    reloader.stakater.com/auto: "true"
+spec:
+  replicas: 2
+  selector:
+    matchLabels:
+      app: cloudflared
+  template:
+    metadata:
+      labels:
+        app: cloudflared
+    spec:
+      securityContext:
+        sysctls:
+        # allow ICMP traffic (ping, traceroute) to resources behind cloudflared
+          - name: net.ipv4.ping_group_range
+            value: "65532 65532"
+      containers:
+        - name: cloudflared
+          image: cloudflare/cloudflared:latest
+          resources:
+            requests:
+              ephemeral-storage: "200Mi"
+            limits:
+              ephemeral-storage: "500Mi"
+          envFrom:
+            - secretRef:
+                name: cloudflared
+          command:
+            # configures tunnel run paramaters
+            - cloudflared
+            - tunnel
+            - --no-autoupdate
+            - --loglevel
+            - debug
+            - --metrics
+            - 0.0.0.0:2000
+            - --config 
+            - /etc/cloudflared/config/config.yaml
+            - run
+              #livenessProbe:
+              #httpGet:
+              #path: /ready
+              #port: 2000
+              #initialDelaySeconds: 30
+              #timeoutSeconds: 2
+              #periodSeconds: 10
+              #failureThreshold: 5
+          volumeMounts:
+            - name: config
+              mountPath: /etc/cloudflared/config
+              readOnly: true 
+      volumes:
+        - name: config
+          configMap:
+            name: cloudflared-config

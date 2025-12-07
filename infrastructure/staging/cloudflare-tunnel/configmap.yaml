@@ -1,0 +1,30 @@
+apiVersion: v1
+kind: ConfigMap 
+metadata:
+  name: cloudflared-config
+data:
+  config.yaml: |
+    ingress:
+      - hostname: link.heroaero.dev
+        service: http://traefik.traefik.svc.cluster.local:80
+      - hostname: mealie.heroaero.dev
+        service: http://traefik.traefik.svc.cluster.local:80
+      - hostname: heroaero.dev
+        service: http://traefik.traefik.svc.cluster.local:80
+      - hostname: graf.heroaero.info
+        service: http://traefik.traefik.svc.cluster.local:80
+      - hostname: ranch.heroaero.dev
+        service: http://traefik.traefik.svc.cluster.local:80
+      - hostname: port.heroaero.dev
+        service: http://traefik.traefik.svc.cluster.local:80     
+      - hostname: md.heroaero.dev
+        service: http://traefik.traefik.svc.cluster.local:80
+      - hostname: vault.heroaero.dev
+        service: http://10.6.6.117:8089
+      - hostname: jelly.heroaero.dev
+        service: http://traefik.traefik.svc.cluster.local:80     
+      - hostname: vlog.heroaero.dev
+        service: http://traefik.traefik.svc.cluster.local:80     
+      - hostname: storage.heroaero.dev
+        service: http://traefik.traefik.svc.cluster.local:80     
+      - service: http_status:404
