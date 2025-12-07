@@ -1,0 +1,60 @@
+name: CI
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  validate:
+    name: Validate Kustomize and Secrets
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Repo
+        uses: actions/checkout@8e8c483db84b4bee98b60c0593521ed34d9990e8 # v6
+
+      - name: Set up Go
+        uses: actions/setup-go@4dc6199c7b1a012772edbd06daecab0f50c9053c # v6
+        with:
+          go-version: '1.25'
+
+      - name: Install tools
+        run: |
+          go install github.com/mikefarah/yq/v4@v4.40.5
+          go install github.com/yannh/kubeconform/cmd/kubeconform@v0.6.4
+          go install github.com/getsops/sops/v3/cmd/sops@v3.8.1
+          curl -s https://raw.githubusercontent.com/kubernetes-sigs/kustomize/master/hack/install_kustomize.sh | bash
+          echo "$PWD" >> $GITHUB_PATH
+
+      - name: Lint Kustomize bases
+        run: |
+          for dir in clusters/*; do
+            if [ -d "$dir" ]; then
+              echo "🔍 Linting $dir"
+              kustomize build "$dir" > /dev/null
+            fi
+          done
+
+      - name: Validate Kubernetes manifests
+        run: |
+          for dir in clusters/*; do
+            if [ -d "$dir" ]; then
+              echo "🔍 Validating manifests in $dir"
+              kustomize build "$dir" | kubeconform \
+                -strict \
+                -summary \
+                -ignore-missing-schemas \
+                -skip CustomResourceDefinition,Kustomization,GitRepository,HelmRelease,ExternalSecret,ClusterSecretStore,SecretStore,Issuer,Certificate
+            fi
+          done
+
+      - name: Check SOPS decryption works
+        env:
+          SOPS_AGE_KEY: ${{ secrets.SOPS_AGE_KEY }}
+        run: |
+          for f in $(find secrets/ -name '*.sops.yaml'); do
+            echo "🔐 Checking $f"
+            sops -d "$f" > /dev/null
+          done

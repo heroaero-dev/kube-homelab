@@ -1,0 +1,20 @@
+{
+  "customManagers": [
+    {
+      "customType": "regex",
+      "fileMatch": ["\\.ya?ml$"],
+      "matchStrings": [
+        // Standard container images (K8s Deployments, StatefulSets, Helm templates)
+        "image:\\s+(?<depName>[^\\s:]+):(?<currentValue>[^\\s]+)",
+
+        // Flux HelmRelease charts
+        "chart:\\s+(?<depName>[^\\s]+)@(?<currentValue>[^\\s]+)",
+
+        // Flux OCI container references
+        "ref:\\s+tag:\\s+(?<currentValue>[^\\s]+)\\s+registry:\\s+(?<depName>[^\\s]+)"
+      ],
+      "datasourceTemplate": "docker"
+    }
+  ]
+}
+

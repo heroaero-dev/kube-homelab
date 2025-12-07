@@ -1,0 +1,21 @@
+{
+  "packageRules": [
+    {
+      "matchManagers": ["docker"],
+      "labels": ["docker"]
+    },
+    {
+      "matchManagers": ["helm-values", "helmv3"],
+      "labels": ["helm"]
+    },
+    {
+      "matchManagers": ["flux"],
+      "labels": ["flux"]
+    },
+    {
+      "matchManagers": ["kubernetes"],
+      "labels": ["kubernetes"]
+    }
+  ]
+}
+

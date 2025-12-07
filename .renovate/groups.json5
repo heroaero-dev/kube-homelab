@@ -1,0 +1,26 @@
+{
+  "packageRules": [
+    {
+      "groupName": "Flux Controllers",
+      "matchPaths": ["kubernetes/apps/kube-system/**"],
+      "matchManagers": ["flux"]
+    },
+    {
+      "groupName": "Monitoring Stack",
+      "matchPaths": ["kubernetes/apps/monitoring/**"]
+    },
+    {
+      "groupName": "External Secrets",
+      "matchPaths": ["kubernetes/apps/external-secrets/**"]
+    },
+    {
+      "groupName": "Helm Charts",
+      "matchManagers": ["helm-values", "helmv3"]
+    },
+    {
+      "groupName": "Docker Images",
+      "matchDatasources": ["docker"]
+    }
+  ]
+}
+

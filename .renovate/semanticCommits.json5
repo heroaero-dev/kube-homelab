@@ -1,0 +1,9 @@
+{
+  "semanticCommits": "enabled",
+  "commitMessagePrefix": "chore(deps)",
+  "commitMessageAction": "update",
+  "commitMessageTopic": "{{depName}}",
+  "commitMessageExtra": "",
+  "commitMessageSuffix": ""
+}
+

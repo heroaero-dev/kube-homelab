@@ -1,0 +1,49 @@
+{
+  $schema: "https://docs.renovatebot.com/renovate-schema.json",
+
+  extends: [
+    "config:recommended",
+    "docker:enableMajor",
+    "helpers:pinGitHubActionDigests",
+
+    // your modules
+    "github>heroaero-dev/kube-homelab//.renovate/autoMerge.json5",
+    "github>heroaero-dev/kube-homelab//.renovate/customManagers.json5",
+    "github>heroaero-dev/kube-homelab//.renovate/groups.json5",
+    "github>heroaero-dev/kube-homelab//.renovate/semanticCommits.json5",
+    "github>heroaero-dev/kube-homelab//.renovate/labels.json5",
+
+    ":automergeBranch",
+    ":disableRateLimiting",
+    ":dependencyDashboard",
+    ":semanticCommits",
+    ":timezone(America/Los_Angeles)"
+  ],
+
+  dependencyDashboardTitle: "Renovate Dashboard 🤖",
+
+  // THIS IS THE MISSING PIECE
+  dependencyDashboardApproval: true,
+
+  suppressNotifications: [
+    "prEditedNotification",
+    "prIgnoreNotification"
+  ],
+
+  ignorePaths: [
+    "**/*.sops.*",
+    "**/resources/**"
+  ],
+
+  flux: {
+    managerFilePatterns: ["\\.yaml(?:\\.j2)?$"]
+  },
+
+  "helm-values": {
+    managerFilePatterns: ["\\.yaml(?:\\.j2)?$"]
+  },
+
+  kubernetes: {
+    managerFilePatterns: ["\\.yaml(?:\\.j2)?$"]
+  }
+}
