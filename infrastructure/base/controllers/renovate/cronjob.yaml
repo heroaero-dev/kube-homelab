@@ -1,0 +1,23 @@
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: renovate
+spec:
+  schedule: "0 */4 * * *"
+  concurrencyPolicy: Forbid
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          containers:
+            - name: renovate
+              image: renovate/renovate:42.39-full
+              args:
+                - heroaero-dev/kube-homelab
+              envFrom:
+                - secretRef:
+                    name: renovate
+                - configMapRef:
+                    name: renovate-configmap
+          restartPolicy: Never
+

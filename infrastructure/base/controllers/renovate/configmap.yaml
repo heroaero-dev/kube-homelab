@@ -1,0 +1,8 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: renovate-configmap
+data:
+  RENOVATE_AUTODISCOVER: "false"
+  RENOVATE_GIT_AUTHOR: "heroaero-dev Bot <bot@renovateapp.com>"
+  RENOVATE_PLATFORM: "github"
