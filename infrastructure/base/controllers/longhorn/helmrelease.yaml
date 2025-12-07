@@ -1,0 +1,111 @@
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: longhorn-release
+spec:
+  interval: 10m
+  chart:
+    spec:
+      chart: longhorn
+      sourceRef:
+        kind: HelmRepository
+        name: longhorn-repo
+      version: 1.10.1
+  values:
+    defaultSettings:
+      createDefaultDiskLabeledNodes: true
+      defaultDataPath: "/mnt/longhorn"
+    longhornManager:
+      nodeSelector:
+        role: storage
+      resources:
+        requests:
+          cpu: 50m
+          memory: 128Mi
+          ephemeral-storage: 512Mi
+        limits:
+          cpu: 300m
+          memory: 256Mi
+          ephemeral-storage: 1Gi
+    longhornUI:
+      nodeSelector:
+        role: storage
+      resources:
+        requests:
+          cpu: 20m
+          memory: 64Mi
+          ephemeral-storage: 128Mi
+        limits:
+          cpu: 200m
+          memory: 128Mi
+          ephemeral-storage: 256Mi
+    longhornAdmissionWebhook:
+      nodeSelector:
+        role: storage
+      resources:
+        requests:
+          cpu: 20m
+          memory: 64Mi
+          ephemeral-storage: 128Mi
+        limits:
+          cpu: 200m
+          memory: 128Mi
+          ephemeral-storage: 256Mi
+    longhornDriver:
+      nodeSelector:
+        role: storage
+      resources:
+        requests:
+          cpu: 50m
+          memory: 128Mi
+          ephemeral-storage: 256Mi
+        limits:
+          cpu: 300m
+          memory: 256Mi
+          ephemeral-storage: 512Mi
+    csi:
+      attacher:
+        nodeSelector:
+          role: storage
+        resources:
+          requests:
+            cpu: 20m
+            memory: 64Mi
+            ephemeral-storage: 128Mi
+
+      provisioner:
+        nodeSelector:
+          role: storage
+        resources:
+          requests:
+            cpu: 20m
+            memory: 64Mi
+            ephemeral-storage: 128Mi
+
+      resizer:
+        nodeSelector:
+          role: storage
+        resources:
+          requests:
+            cpu: 20m
+            memory: 64Mi
+            ephemeral-storage: 128Mi
+
+      snapshotter:
+        nodeSelector:
+          role: storage
+        resources:
+          requests:
+            cpu: 20m
+            memory: 64Mi
+            ephemeral-storage: 128Mi
+    ingress:
+      enabled: true
+      ingressClassName: traefik
+      host: storage.heroaero.dev
+      tls: true
+      tlsSecret: longhorn-tls
+      path: /
+      pathType: ImplementationSpecific
+      annotations:
+        cert-manager.io/cluster-issuer: letsencrypt-production
