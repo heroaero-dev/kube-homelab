@@ -1,0 +1,91 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: homepage
+  labels:
+    app: homepage
+  annotations:
+    reloader.stakater.com/auto: "true"
+spec:
+  selector:
+    matchLabels:
+      app: homepage
+  replicas: 1
+  progressDeadlineSeconds: 600
+  revisionHistoryLimit: 1
+  strategy:
+    type: RollingUpdate
+    rollingUpdate:
+      maxUnavailable: 25%
+      maxSurge: 1
+  template:
+    metadata:
+      labels:
+        app: homepage
+      annotations:
+        deploy-date: "deploy-date-value"
+    spec:
+      containers:
+        - name: homepage
+          image: ghcr.io/gethomepage/homepage:v1.7.0
+          env:
+            - name: HOMEPAGE_ALLOWED_HOSTS
+              value: "heroaero.dev,www.heroaero.dev,localhost,127.0.0.1"
+          resources:
+            requests:
+              cpu: 75m
+              memory: 192Mi
+              ephemeral-storage: 200Mi    
+            limits:
+              cpu: 400m
+              memory: 512Mi
+              ephemeral-storage: 500Mi
+          ports:
+            - containerPort: 3000
+              name: http
+          readinessProbe:
+            httpGet:
+              path: /
+              port: http
+            initialDelaySeconds: 60
+            periodSeconds: 10
+            failureThreshold: 5
+            timeoutSeconds: 5
+          livenessProbe:
+            httpGet:
+              path: /
+              port: http
+            initialDelaySeconds: 10
+            periodSeconds: 10
+            timeoutSeconds: 5
+          volumeMounts:
+            - mountPath: /app/config/custom.js
+              name: homepage
+              subPath: custom.js
+            - mountPath: /app/config/custom.css
+              name: homepage
+              subPath: custom.css
+            - mountPath: /app/config/bookmarks.yaml
+              name: homepage
+              subPath: bookmarks.yaml
+            - mountPath: /app/config/kubernetes.yaml
+              name: homepage
+              subPath: kubernetes.yaml
+            - mountPath: /app/config/services.yaml
+              name: homepage
+              subPath: services.yaml
+            - mountPath: /app/config/settings.yaml
+              name: homepage
+              subPath: settings.yaml
+            - mountPath: /app/config/widgets.yaml
+              name: homepage
+              subPath: widgets.yaml
+            - mountPath: /app/config/logs
+              name: logs
+      volumes:
+        - name: homepage
+          configMap:
+            name: homepage
+        - name: logs
+          emptyDir: {}
+

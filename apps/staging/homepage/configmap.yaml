@@ -1,0 +1,81 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: homepage
+  namespace: default
+  labels:
+    app: homepage
+data:
+  kubernetes.yaml: |
+    mode: cluster
+  settings.yaml: |
+    title: homelab
+
+    background:
+      image: https://cdnb.artstation.com/p/assets/images/images/074/065/791/large/sylvain-sarrailh-sylvainsarrailh-dragonball-tribute.jpg
+      blur: sm # sm, md, xl... see https://tailwindcss.com/docs/backdrop-blur
+      saturate: 100 # 0, 50, 100... see https://tailwindcss.com/docs/backdrop-saturate
+      brightness: 50 # 0, 50, 75... see https://tailwindcss.com/docs/backdrop-brightness
+      opacity: 100 # 0-100
+
+    theme: dark
+    color: slate
+
+    useEqualHeights: true
+
+    layout:
+      Containers:
+        header: true
+        style: row
+        columns: 4
+      Media:
+        header: true
+        style: row
+        columns: 4
+      Other:
+        header: true
+        style: row
+        columns: 4
+  custom.css: ""
+  custom.js: ""
+  bookmarks.yaml: ""
+  services.yaml: |
+    - Monitoring:
+        - kube-prometheus-stack:
+            icon: grafana.svg
+            href: https://graf.heroaero.info
+            description: cluster metrics & alerting
+    - Containers:
+        - Vaultwarden:
+            icon: vaultwarden.svg
+            href: https://vault.heroaero.dev
+            description: password manager
+        - Mealie:
+            icon: mealie.svg
+            href: https://mealie.heroaero.dev
+            description: recipe manager
+        - Obsidian:
+            icon: obsidian.svg
+            href: https://md.heroaero.dev
+            description: note taking app
+    - Media:
+        - Jellyfin:
+            icon: jellyfin.svg
+            href: https://jelly.heroaero.dev
+            description: media server
+    - Other:
+        - GitHub:
+            icon: github.svg
+            href: https://github.com/heroaero-dev/kube-homelab-v2
+            description: source code
+  widgets.yaml: |
+    - resources:
+        cpu: true
+        memory: true
+        disk: /
+
+    - datetime:
+        text_size: xl
+        format:
+          timeStyle: short
+  docker.yaml: ""
