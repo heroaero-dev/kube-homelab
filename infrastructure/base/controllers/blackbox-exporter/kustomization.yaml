@@ -4,4 +4,3 @@ namespace: monitoring
 resources:
   - ./helm-release.yaml
   - ./ocirepository.yaml
-  - ./probes.yaml
