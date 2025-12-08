@@ -1,0 +1,23 @@
+apiVersion: monitoring.coreos.com/v1
+kind: Probe
+metadata:
+  name: web-http
+  namespace: observability
+spec:
+  module: http_2xx
+  prober:
+    url: blackbox-exporter-lan.observability.svc.cluster.local:9115
+  targets:
+    staticConfig:
+      static:
+        - https://plex.heroaero.dev
+        - https://mealie.heroaero.dev
+        - https://md.heroaero.dev
+        - https://homepage.heroaero.dev
+        - https://portainer.heroaero.dev
+        - https://graf.heroaero.info
+  metricRelabelings:
+    - targetLabel: service
+      replacement: blackbox-exporter-lan
+      action: replace
+
