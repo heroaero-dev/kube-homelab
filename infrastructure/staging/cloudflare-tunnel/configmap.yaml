@@ -16,7 +16,7 @@ data:
       - hostname: ranch.heroaero.dev
         service: http://traefik.traefik.svc.cluster.local:80
       - hostname: port.heroaero.dev
-        service: http://portainer.default.svc.cluster.local:9000
+        service: http://traefik.traefik.svc.cluster.local:80
       - hostname: md.heroaero.dev
         service: http://traefik.traefik.svc.cluster.local:80
       - hostname: vault.heroaero.dev
