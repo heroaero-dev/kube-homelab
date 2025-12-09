@@ -7,3 +7,4 @@ resources:
   - ./homepage
   - ./postgresql
   - ./jellyfin
+  - ./podinfo
