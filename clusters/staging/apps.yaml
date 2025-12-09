@@ -13,6 +13,5 @@ spec:
     namespace: flux-system
   path: ./apps/staging
   targetNamespace: staging
-  createNamespace: true
   prune: true
   wait: true
