@@ -12,7 +12,7 @@ spec:
     kind: GitRepository
     name: flux-system
     namespace: flux-system
-  path: ./infrastructure/staging
+  path: ./infrastructure/controllers
   prune: true
   wait: true
 ---
