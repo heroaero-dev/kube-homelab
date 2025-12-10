@@ -1,0 +1,24 @@
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: victoria-logs
+spec:
+  chartRef:
+    kind: OCIRepository
+    name: victoria-logs
+  interval: 1h
+  values:
+    fullnameOverride: victoria-logs
+    server:
+      persistentVolume:
+        enabled: true
+        storageClassName: longhorn
+        size: 20Gi
+      retentionPeriod: 14d
+      route:
+        enabled: false
+      serviceMonitor:
+        enabled: true
+    dashboards:
+      enabled: true
+
