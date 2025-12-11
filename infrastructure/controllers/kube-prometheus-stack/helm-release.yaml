@@ -28,15 +28,6 @@ spec:
 
   values:
     grafana:
-      resources:
-        requests:
-          cpu: "30m"
-          memory: "64Mi"
-          ephemeral-storage: "128Mi"
-        limits:
-          cpu: "200m"
-          memory: "128Mi"
-          ephemeral-storage: "512Mi"
       enabled: true
       podAnnotations:
         reloader.stakater.com/auto: "true"
