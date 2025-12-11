@@ -1,0 +1,44 @@
+# yaml-language-server: $schema=https://kubernetes-schemas.pages.dev/monitoring.coreos.com/scrapeconfig_v1alpha1.json
+apiVersion: monitoring.coreos.com/v1alpha1
+kind: ScrapeConfig
+metadata:
+  name: blackbox-http
+  labels:
+    release: kube-prometheus-stack
+spec:
+  # This is the path blackbox-exporter exposes
+  metricsPath: /probe
+
+  # Tell blackbox-exporter which module to use
+  params:
+    module:
+      - http_2xx
+
+  # --- List of targets you want to monitor ---
+  staticConfigs:
+    - targets:
+        - https://heroaero.dev
+        - https://jelly.heroaero.dev
+        - https://link.heroaero.dev
+        - https://vault.heroaero.dev
+        - https://mealie.heroaero.dev
+        - https://graf.heroaero.info
+
+  # --- Relabeling magic to send each target to blackbox-exporter ---
+  relabelings:
+    # Take the target address and pass it as the `target` param to blackbox
+    - sourceLabels: [__address__]
+      targetLabel: __param_target
+
+    # Copy that target value into a readable label called "instance"
+    - sourceLabels: [__param_target]
+      targetLabel: instance
+
+    # Replace the original scrape address with the blackbox-exporter service
+    - targetLabel: __address__
+      replacement: blackbox-exporter-lan.monitoring.svc.cluster.local:9115
+
+    # Optional: tag all probes with a `job` label
+    - targetLabel: job
+      replacement: blackbox-exporter
+
