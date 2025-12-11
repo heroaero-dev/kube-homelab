@@ -11,7 +11,7 @@ spec:
         spec:
           containers:
             - name: renovate
-              image: renovate/renovate:42.42-full
+              image: renovate/renovate:42.44-full
               args:
                 - heroaero-dev/kube-homelab
               envFrom:
