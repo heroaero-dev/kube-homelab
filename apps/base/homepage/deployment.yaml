@@ -25,21 +25,9 @@ spec:
       annotations:
         deploy-date: "deploy-date-value"
     spec:
-      securityContext:
-        runAsNonRoot: true
-        runAsUser: 1000
-        runAsGroup: 1000
-        fsGroup: 1000
-        seccompProfile:
-          type: RuntimeDefault
       containers:
         - name: homepage
           image: ghcr.io/gethomepage/homepage:v1.8.0
-          securityContext:
-            allowPrivilegeEscalation: false
-            capabilities:
-              drop:
-                - ALL
           env:
             - name: HOMEPAGE_ALLOWED_HOSTS
               value: "heroaero.dev,www.heroaero.dev,localhost,127.0.0.1,heroaero.info,www.heroaero.info"
@@ -71,9 +59,6 @@ spec:
             periodSeconds: 10
             timeoutSeconds: 5
           volumeMounts:
-            - mountPath: /app/config/docker.yaml
-              name: homepage
-              subPath: docker.yaml
             - mountPath: /app/config/custom.js
               name: homepage
               subPath: custom.js
