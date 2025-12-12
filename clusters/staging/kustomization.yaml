@@ -3,6 +3,8 @@ kind: Kustomization
 
 resources:
   - ./flux-system
-  - ./namespace.yaml
-  - ./apps.yaml
+  - ./namespace-dev.yaml
+  - ./namespace-staging.yaml
+  - ./apps-dev.yaml
+  - ./apps-staging.yaml
   - ./infrastructure.yaml
