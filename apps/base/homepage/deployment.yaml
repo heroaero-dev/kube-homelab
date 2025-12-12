@@ -71,6 +71,9 @@ spec:
             periodSeconds: 10
             timeoutSeconds: 5
           volumeMounts:
+            - mountPath: /app/config/docker.yaml
+              name: homepage
+              subPath: docker.yaml
             - mountPath: /app/config/custom.js
               name: homepage
               subPath: custom.js
