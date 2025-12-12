@@ -1,0 +1,194 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: homepage
+  labels:
+    app: homepage
+data:
+  kubernetes.yaml: |
+    mode: cluster
+  settings.yaml: |
+    title: DEV LAB
+
+    background:
+      image: https://cdnb.artstation.com/p/assets/images/images/042/468/953/large/alena-aenami-eclipse-1k.jpg
+      blur: sm
+      saturate: 80
+      brightness: 40
+      opacity: 100
+
+    theme: dark
+    color: emerald
+
+    headerStyle: boxed
+
+    statusStyle: dot
+
+    useEqualHeights: true
+
+    layout:
+      Cluster:
+        header: true
+        style: row
+        columns: 4
+      Apps:
+        header: true
+        style: row
+        columns: 4
+      Infrastructure:
+        header: true
+        style: row
+        columns: 4
+      External:
+        header: true
+        style: row
+        columns: 4
+
+  custom.css: |
+    /* DEV environment indicator */
+    #page_container::before {
+      content: "DEV ENVIRONMENT";
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      background: linear-gradient(90deg, #10b981, #059669);
+      color: white;
+      text-align: center;
+      padding: 4px;
+      font-weight: bold;
+      font-size: 12px;
+      letter-spacing: 2px;
+      z-index: 9999;
+    }
+
+    #page_container {
+      padding-top: 28px !important;
+    }
+
+    /* Glow effect on service cards */
+    .service-card:hover {
+      box-shadow: 0 0 20px rgba(16, 185, 129, 0.3);
+      transition: all 0.3s ease;
+    }
+
+  custom.js: ""
+
+  bookmarks.yaml: |
+    - Developer Tools:
+        - Kubernetes Docs:
+            - icon: kubernetes.svg
+              href: https://kubernetes.io/docs/
+        - FluxCD Docs:
+            - icon: flux-cd.svg
+              href: https://fluxcd.io/docs/
+        - Kustomize:
+            - icon: kubernetes.svg
+              href: https://kustomize.io/
+
+  services.yaml: |
+    - Cluster:
+        - Prometheus:
+            icon: prometheus.svg
+            href: https://graf.heroaero.info
+            description: Metrics & Monitoring
+            namespace: monitoring
+            app: kube-prometheus-stack
+        - Longhorn:
+            icon: longhorn.svg
+            href: https://longhorn.heroaero.info
+            description: Distributed Storage
+            namespace: longhorn-system
+            app: longhorn
+        - Traefik:
+            icon: traefik.svg
+            href: https://traefik.heroaero.info
+            description: Ingress Controller
+            namespace: traefik
+            app: traefik
+
+    - Apps:
+        - Homepage:
+            icon: homepage.svg
+            href: https://dev.heroaero.dev
+            description: This Dashboard (Dev)
+            namespace: dev
+            app: homepage
+        - Mealie:
+            icon: mealie.svg
+            href: https://mealie-dev.heroaero.dev
+            description: Recipe Manager
+            namespace: dev
+            app: mealie
+        - Linkding:
+            icon: linkding.svg
+            href: https://linkding-dev.heroaero.dev
+            description: Bookmark Manager
+            namespace: dev
+            app: linkding
+
+    - Infrastructure:
+        - Portainer:
+            icon: portainer.svg
+            href: https://portainer-dev.heroaero.dev
+            description: Container Management
+            namespace: dev
+            app: portainer
+        - PostgreSQL:
+            icon: postgresql.svg
+            description: Database Server
+            namespace: dev
+            app: postgres
+        - Jellyfin:
+            icon: jellyfin.svg
+            href: https://jelly-dev.heroaero.dev
+            description: Media Server
+            namespace: dev
+            app: jellyfin
+
+    - External:
+        - GitHub:
+            icon: github.svg
+            href: https://github.com/heroaero-dev/kube-homelab
+            description: Source Code
+        - Cloudflare:
+            icon: cloudflare.svg
+            href: https://dash.cloudflare.com
+            description: DNS & Tunnel
+
+  widgets.yaml: |
+    - logo:
+        icon: https://raw.githubusercontent.com/walkxcode/dashboard-icons/main/svg/kubernetes.svg
+
+    - greeting:
+        text_size: 2xl
+        text: "Dev Environment"
+
+    - kubernetes:
+        cluster:
+          show: true
+          cpu: true
+          memory: true
+          showLabel: true
+          label: "dev cluster"
+        nodes:
+          show: true
+          cpu: true
+          memory: true
+          showLabel: true
+
+    - datetime:
+        text_size: l
+        format:
+          dateStyle: long
+          timeStyle: short
+
+    - openmeteo:
+        label: Local
+        latitude: 40.7128
+        longitude: -74.0060
+        timezone: America/New_York
+        units: imperial
+        cache: 5
+
+  docker.yaml: ""
