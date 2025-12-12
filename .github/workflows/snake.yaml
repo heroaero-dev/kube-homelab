@@ -15,7 +15,7 @@ jobs:
 
     steps:
       - name: Generate Snake Animation
-        uses: Platane/snk/svg-only@v3
+        uses: Platane/snk/svg-only@e2cedf76a2c05b25d09a6428ded69727b497a700 # v3
         with:
           github_user_name: ${{ github.repository_owner }}
           outputs: |
@@ -23,7 +23,7 @@ jobs:
             dist/github-snake-dark.svg?palette=github-dark
 
       - name: Push to output branch
-        uses: crazy-max/ghaction-github-pages@v4
+        uses: crazy-max/ghaction-github-pages@df5cc2bfa78282ded844b354faee141f06b41865 # v4
         with:
           target_branch: output
           build_dir: dist
