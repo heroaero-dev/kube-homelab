@@ -2,7 +2,10 @@ apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
   name: linkding
+  annotations:
+    cert-manager.io/cluster-issuer: letsencrypt-production
 spec:
+  ingressClassName: traefik
   tls:
     - hosts:
         - link.heroaero.info
