@@ -2,18 +2,13 @@ apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
   name: linkding
-  annotations:
-    cert-manager.io/cluster-issuer: letsencrypt-production
-    # Optional: force redirect https
-    nginx.ingress.kubernetes.io/force-ssl-redirect: "true"
 spec:
-  ingressClassName: traefik
   tls:
     - hosts:
-      - link.heroaero.dev
-      secretName: linkding-tls 
+        - link.heroaero.info
+      secretName: linkding-tls
   rules:
-    - host: link.heroaero.dev
+    - host: link.heroaero.info
       http:
         paths:
           - backend:

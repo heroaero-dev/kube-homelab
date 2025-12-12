@@ -2,17 +2,13 @@ apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
   name: jellyfin
-  annotations:
-    # adjust for your ingress controller + certs
-    cert-manager.io/cluster-issuer: "letsencrypt-production"
 spec:
-  ingressClassName: traefik
   tls:
     - hosts:
-        - jelly.heroaero.dev
+        - jelly.heroaero.info
       secretName: jellyfin-tls
   rules:
-    - host: jelly.heroaero.dev
+    - host: jelly.heroaero.info
       http:
         paths:
           - path: /
@@ -22,4 +18,3 @@ spec:
                 name: jellyfin
                 port:
                   number: 8096
-

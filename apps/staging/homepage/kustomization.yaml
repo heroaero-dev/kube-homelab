@@ -3,4 +3,5 @@ kind: Kustomization
 resources:
   - ./configmap.yaml
   - ./autoscaler.yaml
+  - ./ingress.yaml
   - ../../base/homepage

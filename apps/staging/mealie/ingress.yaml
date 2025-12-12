@@ -2,18 +2,13 @@ apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
   name: mealie
-  annotations:
-    cert-manager.io/cluster-issuer: letsencrypt-production
-    # Optional: force redirect https
-    nginx.ingress.kubernetes.io/force-ssl-redirect: "true"
 spec:
-  ingressClassName: traefik
   tls:
     - hosts:
-      - mealie.heroaero.dev
-      secretName: mealie-tls 
+        - mealie.heroaero.info
+      secretName: mealie-tls
   rules:
-    - host: mealie.heroaero.dev
+    - host: mealie.heroaero.info
       http:
         paths:
           - backend:
