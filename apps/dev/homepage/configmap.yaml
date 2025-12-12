@@ -110,19 +110,19 @@ data:
     - Apps:
         - Homepage:
             icon: homepage.svg
-            href: https://dev.heroaero.dev
+            href: https://heroaero.dev
             description: This Dashboard (Dev)
             namespace: dev
             app: homepage
         - Mealie:
             icon: mealie.svg
-            href: https://mealie-dev.heroaero.dev
+            href: https://mealie.heroaero.dev
             description: Recipe Manager
             namespace: dev
             app: mealie
         - Linkding:
             icon: linkding.svg
-            href: https://linkding-dev.heroaero.dev
+            href: https://link.heroaero.dev
             description: Bookmark Manager
             namespace: dev
             app: linkding
@@ -130,7 +130,7 @@ data:
     - Infrastructure:
         - Portainer:
             icon: portainer.svg
-            href: https://portainer-dev.heroaero.dev
+            href: https://port.heroaero.dev
             description: Container Management
             namespace: dev
             app: portainer
@@ -141,7 +141,7 @@ data:
             app: postgres
         - Jellyfin:
             icon: jellyfin.svg
-            href: https://jelly-dev.heroaero.dev
+            href: https://jelly.heroaero.dev
             description: Media Server
             namespace: dev
             app: jellyfin
