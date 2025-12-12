@@ -2,18 +2,13 @@ apiVersion: networking.k8s.io/v1
 kind: Ingress
 metadata:
   name: homepage
-  annotations:
-    cert-manager.io/cluster-issuer: letsencrypt-production
-    # Optional: force redirect https
-    nginx.ingress.kubernetes.io/force-ssl-redirect: "true"
 spec:
-  ingressClassName: traefik
   tls:
     - hosts:
-      - heroaero.dev
-      secretName: homepage-tls 
+        - heroaero.info
+      secretName: homepage-tls
   rules:
-    - host: heroaero.dev
+    - host: heroaero.info
       http:
         paths:
           - backend:

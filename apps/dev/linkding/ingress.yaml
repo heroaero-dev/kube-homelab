@@ -1,0 +1,23 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: linkding
+  annotations:
+    cert-manager.io/cluster-issuer: letsencrypt-production
+spec:
+  ingressClassName: traefik
+  tls:
+    - hosts:
+        - link.heroaero.dev
+      secretName: linkding-tls
+  rules:
+    - host: link.heroaero.dev
+      http:
+        paths:
+          - backend:
+              service:
+                name: linkding
+                port:
+                  number: 6767
+            path: /
+            pathType: Prefix

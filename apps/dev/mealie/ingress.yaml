@@ -1,0 +1,23 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: mealie
+  annotations:
+    cert-manager.io/cluster-issuer: letsencrypt-production
+spec:
+  ingressClassName: traefik
+  tls:
+    - hosts:
+        - mealie.heroaero.dev
+      secretName: mealie-tls
+  rules:
+    - host: mealie.heroaero.dev
+      http:
+        paths:
+          - backend:
+              service:
+                name: mealie
+                port:
+                  number: 9001
+            path: /
+            pathType: Prefix
