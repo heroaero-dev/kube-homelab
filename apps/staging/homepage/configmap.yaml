@@ -52,7 +52,7 @@ data:
             description: password manager
         - Mealie:
             icon: mealie.svg
-            href: https://mealie.heroaero.dev
+            href: https://mealie.heroaero.info
             description: recipe manager
         - Obsidian:
             icon: obsidian.svg
@@ -61,12 +61,12 @@ data:
     - Media:
         - Jellyfin:
             icon: jellyfin.svg
-            href: https://jelly.heroaero.dev
+            href: https://jelly.heroaero.info
             description: media server
     - Other:
         - GitHub:
             icon: github.svg
-            href: https://github.com/heroaero-dev/kube-homelab-v2
+            href: https://github.com/heroaero-dev/kube-homelab
             description: source code
   widgets.yaml: |
     - resources:
