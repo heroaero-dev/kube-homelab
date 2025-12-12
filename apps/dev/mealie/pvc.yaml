@@ -1,4 +1,3 @@
- cat staging/mealie/pvc.yaml 
 apiVersion: v1
 kind: PersistentVolumeClaim
 metadata:
