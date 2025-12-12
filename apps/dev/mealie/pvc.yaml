@@ -1,0 +1,12 @@
+ cat staging/mealie/pvc.yaml 
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: mealie
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 3Gi
+  storageClassName: longhorn
