@@ -1,5 +1,5 @@
 apiVersion: v1
-kind: ConfigMap 
+kind: ConfigMap
 metadata:
   name: cloudflared-config
 data:
@@ -20,13 +20,13 @@ data:
       - hostname: vault.heroaero.dev
         service: http://10.6.6.117:8089
       - hostname: jelly.heroaero.dev
-        service: http://traefik.traefik.svc.cluster.local:80     
+        service: http://traefik.traefik.svc.cluster.local:80
       - hostname: vlog.heroaero.dev
-        service: http://traefik.traefik.svc.cluster.local:80     
+        service: http://traefik.traefik.svc.cluster.local:80
       - hostname: storage.heroaero.dev
-        service: http://traefik.traefik.svc.cluster.local:80     
+        service: http://traefik.traefik.svc.cluster.local:80
       - hostname: n8n.heroaero.dev
-        service: http://n8n.staging.svc.cluster.local:80
+        service: http://traefik.traefik.svc.cluster.local:80
 
       # ============ STAGING (.info) ============
       - hostname: heroaero.info
