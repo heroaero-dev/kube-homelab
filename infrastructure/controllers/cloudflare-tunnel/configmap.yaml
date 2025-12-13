@@ -31,6 +31,8 @@ data:
       # ============ STAGING (.info) ============
       - hostname: heroaero.info
         service: http://traefik.traefik.svc.cluster.local:80
+      - hostname: n8n.heroaero.info
+        service: http://traefik.traefik.svc.cluster.local:80
       - hostname: link.heroaero.info
         service: http://traefik.traefik.svc.cluster.local:80
       - hostname: mealie.heroaero.info
