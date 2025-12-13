@@ -47,7 +47,7 @@ spec:
         accessModes:
           - ReadWriteOnce
         size: 5Gi
-        storageClassName: longhorn
+        storageClassName: nfs
         finalizers:
           - kubernetes.io/pvc-protection
       sidecar:

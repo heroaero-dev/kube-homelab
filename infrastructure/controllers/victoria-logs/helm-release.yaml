@@ -12,7 +12,7 @@ spec:
     server:
       persistentVolume:
         enabled: true
-        storageClassName: longhorn
+        storageClassName: nfs
         size: 20Gi
       retentionPeriod: 14d
       route:
