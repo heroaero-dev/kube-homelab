@@ -7,3 +7,4 @@ resources:
   - ./mealie
   - ./postgresql
   - ./portainer
+  - ./n8n
