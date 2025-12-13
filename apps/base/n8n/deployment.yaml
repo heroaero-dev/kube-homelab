@@ -1,0 +1,40 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: n8n
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: n8n
+  template:
+    metadata:
+      labels:
+        app: n8n
+    spec:
+      securityContext:          # <--- fsGroup belongs here
+        fsGroup: 1000
+        runAsUser: 1000
+        runAsGroup: 1000
+      containers:
+      - name: n8n
+        image: n8nio/n8n:latest
+        envFrom:
+        - secretRef:
+            name: postgresql
+        env:
+          - name: DB_TYPE
+            value: postgresdb
+          - name: N8N_PORT
+            value: "5678"
+          - name: N8N_BASIC_AUTH_ACTIVE
+            value: "true"
+        ports:
+        - containerPort: 5678
+        volumeMounts:
+        - name: n8n-files
+          mountPath: /home/node/.n8n
+      volumes:
+      - name: n8n-files
+        persistentVolumeClaim:
+          claimName: n8n-pvc
