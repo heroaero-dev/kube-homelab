@@ -18,7 +18,7 @@ spec:
         runAsGroup: 33 # www-data group ID
       containers:
         - name: linkding
-          image: sissbruecker/linkding:1.44.1-plus-alpine
+          image: sissbruecker/linkding:1.44.2-plus-alpine
           securityContext:
             allowPrivilegeEscalation: False
           ports:
