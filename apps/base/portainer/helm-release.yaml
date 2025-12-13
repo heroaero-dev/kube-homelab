@@ -35,5 +35,5 @@ spec:
     persistence:
       enabled: true
       size: 10Gi
-      storageClass: longhorn
+      storageClass: nfs
       accessMode: ReadWriteOnce
