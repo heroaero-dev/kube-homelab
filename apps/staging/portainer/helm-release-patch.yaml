@@ -1,0 +1,16 @@
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: portainer
+spec:
+  values:
+    ingress:
+      hosts:
+        - host: port.heroaero.info
+          paths:
+            - path: /
+              port: 9000
+      tls:
+        - hosts:
+            - port.heroaero.info
+          secretName: portainer-tls
