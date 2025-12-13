@@ -19,7 +19,7 @@ spec:
       path: "/mnt/storage/nfs/k8s"
     storageClass:
       name: nfs
-      defaultClass: false
+      defaultClass: true
       reclaimPolicy: Retain
       archiveOnDelete: true
       accessModes: ReadWriteOnce

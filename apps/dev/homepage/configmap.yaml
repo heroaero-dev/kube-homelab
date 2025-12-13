@@ -94,12 +94,6 @@ data:
             description: Metrics & Monitoring
             namespace: monitoring
             app: kube-prometheus-stack
-        - Longhorn:
-            icon: longhorn.svg
-            href: https://longhorn.heroaero.info
-            description: Distributed Storage
-            namespace: longhorn-system
-            app: longhorn
         - Traefik:
             icon: traefik.svg
             href: https://traefik.heroaero.info
