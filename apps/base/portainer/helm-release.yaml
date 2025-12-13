@@ -13,6 +13,9 @@ spec:
       version: 2.33.5
   interval: 10m0s
   values:
+    trusted_origins:
+      enabled: true
+      domains: "port.heroaero.dev,port.heroaero.info"
     service:
       type: ClusterIP
       httpPort: 9000
