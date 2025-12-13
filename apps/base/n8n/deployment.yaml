@@ -29,6 +29,8 @@ spec:
             value: "5678"
           - name: N8N_BASIC_AUTH_ACTIVE
             value: "true"
+          - name: WEBHOOK_URL
+            value: "https://n8n.heroaero.dev"
         ports:
         - containerPort: 5678
         volumeMounts:
