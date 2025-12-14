@@ -1,6 +1,6 @@
 apiVersion: helm.toolkit.fluxcd.io/v2
 kind: HelmRelease
-metadata: 
+metadata:
   name: traefik
 spec:
   interval: 1h
@@ -12,3 +12,8 @@ spec:
         kind: HelmRepository
         name: traefik
         namespace: traefik
+  values:
+    deployment:
+      enabled: true
+      kind: Deployment
+      replicas: 2
