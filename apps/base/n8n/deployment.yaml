@@ -19,6 +19,13 @@ spec:
       containers:
       - name: n8n
         image: n8nio/n8n:latest
+        resources:
+          requests:
+            memory: "192Mi"
+            cpu: "50m"
+          limits:
+            memory: "384Mi"
+            cpu: "500m"
         envFrom:
         - secretRef:
             name: postgresql

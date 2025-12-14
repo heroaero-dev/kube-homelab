@@ -19,6 +19,13 @@ spec:
       containers:
         - name: linkding
           image: sissbruecker/linkding:1.44.1-plus-alpine
+          resources:
+            requests:
+              memory: "96Mi"
+              cpu: "25m"
+            limits:
+              memory: "256Mi"
+              cpu: "300m"
           securityContext:
             allowPrivilegeEscalation: False
           ports:
