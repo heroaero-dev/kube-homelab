@@ -5,4 +5,5 @@ resources:
   - ./cluster-secret-store.yaml
   - ./clusterissuer.yaml
   - ./network-policies
+  - ./portainer-rbac
 
