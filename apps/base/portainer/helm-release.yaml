@@ -33,6 +33,13 @@ spec:
         - hosts:
             - port.heroaero.dev
           secretName: portainer-tls
+    resources:
+      requests:
+        memory: "32Mi"
+        cpu: "25m"
+      limits:
+        memory: "128Mi"
+        cpu: "200m"
     persistence:
       enabled: true
       size: 10Gi

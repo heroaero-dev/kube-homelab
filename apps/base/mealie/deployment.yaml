@@ -24,10 +24,14 @@ spec:
           # securityContext:
           #allowPrivilegeEscalation: false
         resources:
-            requests:
-              ephemeral-storage: "200Mi"
-            limits:
-              ephemeral-storage: "500Mi"
+          requests:
+            memory: "256Mi"
+            cpu: "50m"
+            ephemeral-storage: "200Mi"
+          limits:
+            memory: "512Mi"
+            cpu: "500m"
+            ephemeral-storage: "500Mi"
         ports:
           - containerPort: 9000
         env:

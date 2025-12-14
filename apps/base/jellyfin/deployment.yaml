@@ -20,8 +20,12 @@ spec:
           image: linuxserver/jellyfin:nightly-version-2025112405ubu2404
           resources:
             requests:
+              memory: "128Mi"
+              cpu: "50m"
               ephemeral-storage: "200Mi"
             limits:
+              memory: "512Mi"
+              cpu: "1000m"
               ephemeral-storage: "500Mi"
           env:
             - name: PUID
