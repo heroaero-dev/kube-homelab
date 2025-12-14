@@ -4,3 +4,11 @@ resources:
   - ./pvc.yaml
   - ../../base/n8n
   - ./ingress.yaml
+patches:
+  - target:
+      kind: Deployment
+      name: n8n
+    patch: |
+      - op: replace
+        path: /spec/replicas
+        value: 3
