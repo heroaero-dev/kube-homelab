@@ -49,44 +49,6 @@ Unlike managed Kubernetes or simplified distributions (k3s, microk8s), kubeadm e
 
 ## 🏗 Architecture
 
-### Cluster Topology
-
-```
-┌─────────────────────────────────────────────────────────────────────────────┐
-│                              EXTERNAL ACCESS                                 │
-│                                                                              │
-│    Internet ──▶ Cloudflare Tunnel ──▶ Traefik Ingress ──▶ Services          │
-│                                                                              │
-└─────────────────────────────────────────────────────────────────────────────┘
-                                       │
-                                       ▼
-┌─────────────────────────────────────────────────────────────────────────────┐
-│                           KUBERNETES CLUSTER                                 │
-│                                                                              │
-│  ┌─────────────────────────────────────────────────────────────────────┐    │
-│  │                     CONTROL PLANE (AMD Ryzen 9)                      │    │
-│  │  ┌──────────┐ ┌──────────┐ ┌──────────┐ ┌──────────┐ ┌──────────┐   │    │
-│  │  │ API      │ │ etcd     │ │ Scheduler│ │ CCM      │ │ Longhorn │   │    │
-│  │  │ Server   │ │          │ │          │ │          │ │ Storage  │   │    │
-│  │  └──────────┘ └──────────┘ └──────────┘ └──────────┘ └──────────┘   │    │
-│  └─────────────────────────────────────────────────────────────────────┘    │
-│                                                                              │
-│  ┌────────────────────────────┐    ┌────────────────────────────────┐       │
-│  │     WORKER NODE 1          │    │     WORKER NODE 2              │       │
-│  │     (Raspberry Pi CM5)     │    │     (Raspberry Pi CM5)         │       │
-│  │  ┌────────┐ ┌────────┐     │    │  ┌────────┐ ┌────────┐         │       │
-│  │  │ Kubelet│ │ Cilium │     │    │  │ Kubelet│ │ Cilium │         │       │
-│  │  └────────┘ └────────┘     │    │  └────────┘ └────────┘         │       │
-│  └────────────────────────────┘    └────────────────────────────────┘       │
-│                                                                              │
-│  ┌─────────────────────────────────────────────────────────────────────┐    │
-│  │                        NETWORKING (Cilium eBPF)                      │    │
-│  │         MetalLB L2 Load Balancer  │  Traefik Ingress Controller     │    │
-│  └─────────────────────────────────────────────────────────────────────┘    │
-│                                                                              │
-└─────────────────────────────────────────────────────────────────────────────┘
-```
-
 ### Hardware Specifications
 
 | Node | Role | Hardware | Specs |
@@ -131,7 +93,7 @@ flowchart LR
 | **Cluster** | kubeadm | Bare-metal Kubernetes provisioning |
 | **GitOps** | FluxCD v2 | Continuous delivery and reconciliation |
 | **CNI** | Cilium | eBPF-powered networking, kube-proxy replacement |
-| **Storage** | Longhorn | Distributed block storage with replication |
+| **Storage** | NFS Subdir Provisioner | Dynamic NFS-backed persistent volumes |
 | **Load Balancer** | MetalLB | Bare-metal load balancer (L2 mode) |
 | **Ingress** | Traefik | Kubernetes-native ingress controller |
 | **Certificates** | cert-manager | Automated TLS with Let's Encrypt |
@@ -176,14 +138,18 @@ kube-homelab/
 ├── 📁 apps/                      # Application manifests
 │   ├── base/                     # Base configurations (Kustomize)
 │   │   ├── homepage/             # Dashboard
+│   │   ├── home-assistant/       # Smart home automation
 │   │   ├── jellyfin/             # Media server
 │   │   ├── linkding/             # Bookmark manager
 │   │   ├── mealie/               # Recipe manager
+│   │   ├── n8n/                  # Workflow automation
 │   │   ├── portainer/            # Container management
-│   │   ├── postgresql/           # Database
-│   │   └── podinfo/              # Demo application
+│   │   └── postgresql/           # Database
 │   │
-│   └── staging/                  # Environment overlays
+│   ├── staging/                  # Staging environment overlays
+│   │   └── kustomization.yaml
+│   │
+│   └── dev/                      # Dev environment overlays
 │       └── kustomization.yaml
 │
 ├── 📁 clusters/                  # Cluster configurations
@@ -206,7 +172,7 @@ kube-homelab/
 │       ├── fluent-bit/
 │       ├── keda/
 │       ├── kube-prometheus-stack/
-│       ├── longhorn/
+│       ├── nfs-provisioner/
 │       ├── metallb/
 │       ├── reloader/
 │       ├── traefik/
@@ -239,13 +205,15 @@ kube-homelab/
 | **Linkding** | Bookmark manager |
 | **Portainer** | Container management UI |
 | **Vaultwarden** | Password manager (Bitwarden-compatible) |
+| **n8n** | Workflow automation platform |
+| **Home Assistant** | Smart home automation |
 
 ### Platform Services
 
 | Service | Description |
 |---------|-------------|
-| **Grafana** | Metrics dashboards |
-| **Longhorn UI** | Storage management |
+| **Grafana** | Metrics dashboards and alerting |
+| **Prometheus** | Metrics collection and storage |
 | **Traefik Dashboard** | Ingress monitoring |
 
 ---
@@ -300,14 +268,18 @@ kubectl get pods -n staging
 
 ## 🗺 Roadmap
 
-### Current State: Single Environment (Staging)
+### Current State: Multi-Environment (Staging + Dev)
+
+### Completed
+
+- [x] **Multi-tenant structure** — Separate `staging` and `dev` environments with namespace isolation
+- [x] **Network policies** — Cilium-based workload isolation with default-deny ingress
+- [x] **NFS storage migration** — Moved from Longhorn to NFS for simplified storage management
 
 ### Planned Improvements
 
-- [ ] **Multi-tenant structure** — Separate `prod`, `staging`, `dev` environments
 - [ ] **HA Control Plane** — Add additional control plane nodes
 - [ ] **Velero backups** — Cluster and PV backup/restore
-- [ ] **Network policies** — Cilium-based workload isolation
 - [ ] **Service mesh** — Evaluate Cilium Service Mesh or Linkerd
 - [ ] **GPU workloads** — Leverage RX5700XT for ML/transcoding
 - [ ] **Ansible automation** — Node provisioning and kubeadm config
