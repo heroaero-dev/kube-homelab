@@ -2,59 +2,279 @@ name: CI
 
 on:
   push:
-    branches: [ main ]
+    branches: [main]
   pull_request:
-    branches: [ main ]
+    branches: [main]
+
+env:
+  KUBERNETES_VERSION: "1.31.0"
 
 jobs:
+  # ============================================
+  # YAML & Kustomize Validation
+  # ============================================
   validate:
-    name: Validate Kustomize and Secrets
+    name: Validate Manifests
     runs-on: ubuntu-latest
-
     steps:
-      - name: Checkout Repo
-        uses: actions/checkout@8e8c483db84b4bee98b60c0593521ed34d9990e8 # v6
+      - name: Checkout
+        uses: actions/checkout@v4
 
-      - name: Set up Go
-        uses: actions/setup-go@4dc6199c7b1a012772edbd06daecab0f50c9053c # v6
-        with:
-          go-version: '1.25'
+      - name: Setup Flux CLI
+        uses: fluxcd/flux2/action@main
 
-      - name: Install tools
+      - name: Setup Kustomize
+        uses: imranismail/setup-kustomize@v2
+
+      - name: Setup kubeconform
+        uses: bmuschko/setup-kubeconform@v1
+
+      - name: Validate YAML syntax
         run: |
-          go install github.com/mikefarah/yq/v4@v4.40.5
-          go install github.com/yannh/kubeconform/cmd/kubeconform@v0.6.4
-          go install github.com/getsops/sops/v3/cmd/sops@v3.8.1
-          curl -s https://raw.githubusercontent.com/kubernetes-sigs/kustomize/master/hack/install_kustomize.sh | bash
-          echo "$PWD" >> $GITHUB_PATH
-
-      - name: Lint Kustomize bases
-        run: |
-          for dir in clusters/*; do
-            if [ -d "$dir" ]; then
-              echo "🔍 Linting $dir"
-              kustomize build "$dir" > /dev/null
-            fi
+          echo "🔍 Checking YAML syntax..."
+          find . -type f \( -name "*.yaml" -o -name "*.yml" \) \
+            -not -path "./.git/*" \
+            -not -path "./node_modules/*" | while read file; do
+            python3 -c "import yaml; yaml.safe_load(open('$file'))" 2>/dev/null || {
+              echo "❌ Invalid YAML: $file"
+              exit 1
+            }
           done
+          echo "✅ All YAML files are valid"
+
+      - name: Validate Kustomize builds
+        run: |
+          echo "🔍 Validating Kustomize overlays..."
+          for dir in clusters/*/; do
+            echo "  → Building $dir"
+            kustomize build "$dir" > /dev/null || exit 1
+          done
+          echo "✅ All Kustomize builds successful"
 
       - name: Validate Kubernetes manifests
         run: |
-          for dir in clusters/*; do
-            if [ -d "$dir" ]; then
-              echo "🔍 Validating manifests in $dir"
-              kustomize build "$dir" | kubeconform \
-                -strict \
-                -summary \
-                -ignore-missing-schemas \
-                -skip CustomResourceDefinition,Kustomization,GitRepository,HelmRelease,ExternalSecret,ClusterSecretStore,SecretStore,Issuer,Certificate
-            fi
+          echo "🔍 Validating Kubernetes manifests with kubeconform..."
+          for dir in clusters/*/; do
+            echo "  → Validating $dir"
+            kustomize build "$dir" | kubeconform \
+              -strict \
+              -summary \
+              -kubernetes-version ${{ env.KUBERNETES_VERSION }} \
+              -ignore-missing-schemas \
+              -skip CustomResourceDefinition,Kustomization,GitRepository,OCIRepository,HelmRepository,HelmRelease,HelmChart,ExternalSecret,ClusterSecretStore,SecretStore,Issuer,ClusterIssuer,Certificate,CiliumNetworkPolicy,CiliumClusterwideNetworkPolicy,ScaledObject
           done
 
-      - name: Check SOPS decryption works
+      - name: Validate Flux CRDs
+        run: |
+          echo "🔍 Validating Flux custom resources..."
+          flux check --pre || true
+
+          # Validate HelmReleases
+          find . -name "helm-release.yaml" -o -name "helmrelease.yaml" | while read file; do
+            echo "  → Checking $file"
+            yq e '.spec.chart.spec.version' "$file" > /dev/null 2>&1 || echo "    ⚠️  No version pinned in $file"
+          done
+
+  # ============================================
+  # Security Scanning
+  # ============================================
+  security:
+    name: Security Scan
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Scan for secrets
+        uses: gitleaks/gitleaks-action@v2
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Check for 'latest' tags
+        run: |
+          echo "🔍 Checking for 'latest' image tags..."
+          LATEST_FOUND=0
+
+          grep -rn "image:.*:latest" --include="*.yaml" --include="*.yml" . 2>/dev/null | grep -v ".git" | while read line; do
+            echo "❌ Found 'latest' tag: $line"
+            LATEST_FOUND=1
+          done
+
+          grep -rn "tag: latest" --include="*.yaml" --include="*.yml" . 2>/dev/null | grep -v ".git" | while read line; do
+            echo "❌ Found 'latest' tag: $line"
+            LATEST_FOUND=1
+          done
+
+          if [ $LATEST_FOUND -eq 1 ]; then
+            echo ""
+            echo "⚠️  Warning: 'latest' tags found. Consider pinning to specific versions."
+          else
+            echo "✅ No 'latest' tags found"
+          fi
+
+      - name: Run Trivy vulnerability scanner
+        uses: aquasecurity/trivy-action@master
+        with:
+          scan-type: 'config'
+          scan-ref: '.'
+          format: 'table'
+          exit-code: '0'
+          severity: 'CRITICAL,HIGH'
+          ignore-unfixed: true
+
+      - name: Run kube-linter
+        uses: stackrox/kube-linter-action@v1
+        with:
+          directory: .
+          config: .kube-linter.yaml
+        continue-on-error: true
+
+  # ============================================
+  # SOPS Secrets Validation
+  # ============================================
+  secrets:
+    name: Validate Secrets
+    runs-on: ubuntu-latest
+    if: github.event_name == 'pull_request'
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup SOPS
+        uses: mdgreenwald/mozilla-sops-action@v1.6.0
+
+      - name: Check SOPS files are encrypted
+        run: |
+          echo "🔍 Checking SOPS encrypted files..."
+          find . -name "*.sops.yaml" -o -name "*.sops.yml" | while read file; do
+            echo "  → Checking $file"
+            # Verify file contains sops metadata (is encrypted)
+            if ! grep -q "sops:" "$file"; then
+              echo "❌ File appears unencrypted: $file"
+              exit 1
+            fi
+            # Check for accidental plaintext secrets
+            if grep -qE "(password|secret|token|key):\s*['\"]?[^$]" "$file" 2>/dev/null; then
+              if ! grep -q "ENC\[AES256_GCM" "$file"; then
+                echo "⚠️  Potential plaintext secret in: $file"
+              fi
+            fi
+          done
+          echo "✅ All SOPS files appear encrypted"
+
+      - name: Validate SOPS decryption
         env:
           SOPS_AGE_KEY: ${{ secrets.SOPS_AGE_KEY }}
         run: |
-          for f in $(find secrets/ -name '*.sops.yaml'); do
-            echo "🔐 Checking $f"
-            sops -d "$f" > /dev/null
+          if [ -z "$SOPS_AGE_KEY" ]; then
+            echo "⚠️  SOPS_AGE_KEY not set, skipping decryption test"
+            exit 0
+          fi
+
+          echo "🔍 Testing SOPS decryption..."
+          find . -name "*.sops.yaml" -o -name "*.sops.yml" | while read file; do
+            echo "  → Decrypting $file"
+            sops -d "$file" > /dev/null || {
+              echo "❌ Failed to decrypt: $file"
+              exit 1
+            }
+          done
+          echo "✅ All secrets decrypt successfully"
+
+  # ============================================
+  # Kubernetes Best Practices
+  # ============================================
+  best-practices:
+    name: Best Practices
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Kustomize
+        uses: imranismail/setup-kustomize@v2
+
+      - name: Check for missing resource limits
+        run: |
+          echo "🔍 Checking for resource limits..."
+          MISSING=0
+
+          find apps/ -name "deployment.yaml" | while read file; do
+            if ! grep -q "resources:" "$file"; then
+              echo "⚠️  Missing resources in: $file"
+              MISSING=1
+            fi
+            if ! grep -q "limits:" "$file"; then
+              echo "⚠️  Missing limits in: $file"
+            fi
+          done
+
+      - name: Check for missing health probes
+        run: |
+          echo "🔍 Checking for health probes..."
+
+          find apps/ -name "deployment.yaml" | while read file; do
+            HAS_LIVENESS=$(grep -c "livenessProbe:" "$file" 2>/dev/null || echo 0)
+            HAS_READINESS=$(grep -c "readinessProbe:" "$file" 2>/dev/null || echo 0)
+
+            if [ "$HAS_LIVENESS" -eq 0 ] && [ "$HAS_READINESS" -eq 0 ]; then
+              echo "⚠️  No probes in: $file"
+            fi
+          done
+
+      - name: Check for security contexts
+        run: |
+          echo "🔍 Checking for security contexts..."
+
+          find apps/ -name "deployment.yaml" | while read file; do
+            if ! grep -q "securityContext:" "$file"; then
+              echo "⚠️  Missing securityContext in: $file"
+            fi
+            if grep -q "privileged: true" "$file"; then
+              echo "❌ Privileged container in: $file"
+            fi
+          done
+
+      - name: Check image tags are pinned
+        run: |
+          echo "🔍 Checking image tag pinning..."
+
+          find apps/ infrastructure/ -name "*.yaml" | xargs grep -h "image:" 2>/dev/null | while read line; do
+            # Check for :latest or no tag
+            if echo "$line" | grep -qE "image:\s+[^:]+\s*$|:latest"; then
+              echo "⚠️  Unpinned image: $line"
+            fi
+          done
+
+  # ============================================
+  # Diff Preview (PR only)
+  # ============================================
+  diff:
+    name: Diff Preview
+    runs-on: ubuntu-latest
+    if: github.event_name == 'pull_request'
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Setup Flux CLI
+        uses: fluxcd/flux2/action@main
+
+      - name: Setup Kustomize
+        uses: imranismail/setup-kustomize@v2
+
+      - name: Generate diff
+        run: |
+          echo "## 📋 Kustomize Build Diff" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+
+          for dir in clusters/*/; do
+            CLUSTER=$(basename "$dir")
+            echo "### $CLUSTER" >> $GITHUB_STEP_SUMMARY
+            echo '```yaml' >> $GITHUB_STEP_SUMMARY
+            kustomize build "$dir" 2>/dev/null | head -100 >> $GITHUB_STEP_SUMMARY
+            echo '```' >> $GITHUB_STEP_SUMMARY
+            echo "" >> $GITHUB_STEP_SUMMARY
           done

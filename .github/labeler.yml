@@ -1,0 +1,49 @@
+# Labels for PR auto-labeling based on files changed
+
+area/apps:
+  - changed-files:
+      - any-glob-to-any-file: 'apps/**/*'
+
+area/infrastructure:
+  - changed-files:
+      - any-glob-to-any-file: 'infrastructure/**/*'
+
+area/clusters:
+  - changed-files:
+      - any-glob-to-any-file: 'clusters/**/*'
+
+area/ci:
+  - changed-files:
+      - any-glob-to-any-file: '.github/**/*'
+
+env/staging:
+  - changed-files:
+      - any-glob-to-any-file:
+          - 'apps/staging/**/*'
+          - 'clusters/staging/**/*'
+
+env/dev:
+  - changed-files:
+      - any-glob-to-any-file:
+          - 'apps/dev/**/*'
+
+security:
+  - changed-files:
+      - any-glob-to-any-file:
+          - '**/*.sops.yaml'
+          - '**/network-polic*'
+          - '**/rbac*'
+          - '**/clusterrole*'
+
+helm:
+  - changed-files:
+      - any-glob-to-any-file:
+          - '**/helm-release.yaml'
+          - '**/helmrelease.yaml'
+
+storage:
+  - changed-files:
+      - any-glob-to-any-file:
+          - '**/pvc.yaml'
+          - '**/persistentvolume*'
+          - '**/storageclass*'
