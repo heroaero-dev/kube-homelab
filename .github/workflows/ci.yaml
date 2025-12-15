@@ -32,10 +32,11 @@ jobs:
       - name: Validate YAML syntax
         run: |
           echo "🔍 Checking YAML syntax..."
+          pip install pyyaml -q
           find . -type f \( -name "*.yaml" -o -name "*.yml" \) \
             -not -path "./.git/*" \
             -not -path "./node_modules/*" | while read file; do
-            python3 -c "import yaml; yaml.safe_load(open('$file'))" 2>/dev/null || {
+            python3 -c "import yaml; list(yaml.safe_load_all(open('$file')))" 2>/dev/null || {
               echo "❌ Invalid YAML: $file"
               exit 1
             }
