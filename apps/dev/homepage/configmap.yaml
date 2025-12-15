@@ -11,10 +11,10 @@ data:
     title: DEV LAB
 
     background:
-      image: https://cdnb.artstation.com/p/assets/images/images/042/468/953/large/alena-aenami-eclipse-1k.jpg
+      image: https://w.wallhaven.cc/full/pk/wallhaven-pkjpre.jpg
       blur: sm
-      saturate: 80
-      brightness: 40
+      saturate: 100
+      brightness: 30
       opacity: 100
 
     theme: dark
@@ -120,6 +120,18 @@ data:
             description: Bookmark Manager
             namespace: dev
             app: linkding
+        - n8n:
+            icon: n8n.svg
+            href: https://n8n.heroaero.dev
+            description: Workflow Automation
+            namespace: dev
+            app: n8n
+        - Home Assistant:
+            icon: home-assistant.svg
+            href: https://home.heroaero.dev
+            description: Smart Home
+            namespace: dev
+            app: home-assistant
 
     - Infrastructure:
         - Portainer:
