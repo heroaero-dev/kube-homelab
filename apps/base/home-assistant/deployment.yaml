@@ -6,6 +6,8 @@ metadata:
     app: home-assistant
 spec:
   replicas: 1
+  strategy:
+    type: Recreate  # HA locks config dir - can't run two instances
   selector:
     matchLabels:
       app: home-assistant
