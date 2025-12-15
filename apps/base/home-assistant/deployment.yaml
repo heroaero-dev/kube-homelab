@@ -16,7 +16,7 @@ spec:
     spec:
       initContainers:
         - name: install-hacs
-          image: alpine:3.19
+          image: alpine:3.23
           command:
             - sh
             - -c
@@ -36,7 +36,7 @@ spec:
             - name: config
               mountPath: /config
         - name: inject-proxy-config
-          image: busybox:1.36
+          image: busybox:1.37
           command:
             - sh
             - -c
