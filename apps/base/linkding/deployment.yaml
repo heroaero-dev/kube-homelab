@@ -26,6 +26,9 @@ spec:
           volumeMounts:
             - mountPath: /etc/linkding/data
               name: linkding
+          env:
+            - name: LD_CSRF_TRUSTED_ORIGINS
+              value: "https://link.heroaero.dev,https://link.heroaero.info"
           envFrom:
             - secretRef:
                 name: linkding
