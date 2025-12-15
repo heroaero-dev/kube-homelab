@@ -15,6 +15,26 @@ spec:
         app: home-assistant
     spec:
       initContainers:
+        - name: install-hacs
+          image: alpine:3.19
+          command:
+            - sh
+            - -c
+            - |
+              if [ ! -d /config/custom_components/hacs ]; then
+                echo "Installing HACS..."
+                apk add --no-cache wget unzip
+                mkdir -p /config/custom_components
+                wget -O /tmp/hacs.zip https://github.com/hacs/integration/releases/latest/download/hacs.zip
+                unzip -o /tmp/hacs.zip -d /config/custom_components/hacs
+                rm /tmp/hacs.zip
+                echo "HACS installed successfully"
+              else
+                echo "HACS already installed"
+              fi
+          volumeMounts:
+            - name: config
+              mountPath: /config
         - name: inject-proxy-config
           image: busybox:1.36
           command:
@@ -35,7 +55,7 @@ spec:
               mountPath: /config
       containers:
         - name: home-assistant
-          image: ghcr.io/home-assistant/home-assistant:2024.12
+          image: homeassistant/home-assistant:2025.12
           ports:
             - containerPort: 8123
           env:
