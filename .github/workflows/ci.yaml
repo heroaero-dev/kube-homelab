@@ -18,16 +18,16 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5 # v4
 
       - name: Setup Flux CLI
         uses: fluxcd/flux2/action@main
 
       - name: Setup Kustomize
-        uses: imranismail/setup-kustomize@v2
+        uses: imranismail/setup-kustomize@2ba527d4d055ab63514ba50a99456fc35684947f # v2
 
       - name: Setup kubeconform
-        uses: bmuschko/setup-kubeconform@v1
+        uses: bmuschko/setup-kubeconform@5ccaecbbf012bcb1eeeab66e649db64a477ade8f # v1
 
       - name: Validate YAML syntax
         run: |
@@ -93,12 +93,12 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5 # v4
         with:
           fetch-depth: 0
 
       - name: Scan for secrets
-        uses: gitleaks/gitleaks-action@v2
+        uses: gitleaks/gitleaks-action@ff98106e4c7b2bc287b24eaf42907196329070c7 # v2
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
@@ -135,7 +135,7 @@ jobs:
           ignore-unfixed: true
 
       - name: Run kube-linter
-        uses: stackrox/kube-linter-action@v1
+        uses: stackrox/kube-linter-action@87802a2f4e01abebb3ee3c67a3002fea71f6eae5 # v1
         with:
           directory: .
           config: .kube-linter.yaml
@@ -150,10 +150,10 @@ jobs:
     if: github.event_name == 'pull_request'
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5 # v4
 
       - name: Setup SOPS
-        uses: mdgreenwald/mozilla-sops-action@v1.6.0
+        uses: mdgreenwald/mozilla-sops-action@d9714e521cbaecdae64a89d2fdd576dd2aa97056 # v1.6.0
 
       - name: Check SOPS files are encrypted
         run: |
@@ -201,10 +201,10 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5 # v4
 
       - name: Setup Kustomize
-        uses: imranismail/setup-kustomize@v2
+        uses: imranismail/setup-kustomize@2ba527d4d055ab63514ba50a99456fc35684947f # v2
 
       - name: Check for missing resource limits
         run: |
@@ -267,13 +267,13 @@ jobs:
     if: github.event_name == 'pull_request'
     steps:
       - name: Checkout
-        uses: actions/checkout@v4
+        uses: actions/checkout@34e114876b0b11c390a56381ad16ebd13914f8d5 # v4
 
       - name: Setup Flux CLI
         uses: fluxcd/flux2/action@main
 
       - name: Setup Kustomize
-        uses: imranismail/setup-kustomize@v2
+        uses: imranismail/setup-kustomize@2ba527d4d055ab63514ba50a99456fc35684947f # v2
 
       - name: Generate diff
         run: |
