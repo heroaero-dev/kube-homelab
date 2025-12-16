@@ -5,6 +5,7 @@ metadata:
 spec:
   template:
     spec:
+      serviceAccountName: homepage
       containers:
         - name: homepage
           envFrom:
