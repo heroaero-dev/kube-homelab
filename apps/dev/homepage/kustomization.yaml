@@ -3,4 +3,7 @@ kind: Kustomization
 resources:
   - ./configmap.yaml
   - ./ingress.yaml
+  - ./external-secret.yaml
   - ../../base/homepage
+patches:
+  - path: deployment-patch.yaml
