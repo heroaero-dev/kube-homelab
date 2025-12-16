@@ -144,6 +144,7 @@ data:
               username: "{{HOMEPAGE_VAR_UNIFI_USERNAME}}"
               password: "{{HOMEPAGE_VAR_UNIFI_PASSWORD}}"
               site: default
+              insecure: true
         - Portainer:
             icon: portainer.svg
             href: https://port.heroaero.dev
