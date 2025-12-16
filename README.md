@@ -125,62 +125,7 @@ flowchart LR
 | **Autoscaling** | KEDA | Event-driven pod autoscaling |
 | **Config Reload** | Reloader | Automatic rollout on ConfigMap/Secret changes |
 
----
 
-## 📁 Repository Structure
-
-```
-kube-homelab/
-├── 📁 .github/
-│   └── workflows/
-│       └── ci.yaml              # Validation pipeline
-│
-├── 📁 apps/                      # Application manifests
-│   ├── base/                     # Base configurations (Kustomize)
-│   │   ├── homepage/             # Dashboard
-│   │   ├── home-assistant/       # Smart home automation
-│   │   ├── jellyfin/             # Media server
-│   │   ├── linkding/             # Bookmark manager
-│   │   ├── mealie/               # Recipe manager
-│   │   ├── n8n/                  # Workflow automation
-│   │   ├── portainer/            # Container management
-│   │   └── postgresql/           # Database
-│   │
-│   ├── staging/                  # Staging environment overlays
-│   │   └── kustomization.yaml
-│   │
-│   └── dev/                      # Dev environment overlays
-│       └── kustomization.yaml
-│
-├── 📁 clusters/                  # Cluster configurations
-│   └── staging/
-│       ├── flux-system/          # FluxCD bootstrap
-│       ├── apps.yaml             # App Kustomization
-│       ├── infrastructure.yaml   # Infra Kustomization
-│       └── kustomization.yaml
-│
-├── 📁 infrastructure/            # Platform components
-│   ├── configs/                  # Cluster-wide configs
-│   │   ├── cluster-secret-store.yaml
-│   │   └── clusterissuer.yaml
-│   │
-│   └── controllers/              # Helm-managed controllers
-│       ├── cert-manager/
-│       ├── cilium/
-│       ├── cloudflare-tunnel/
-│       ├── external-secrets/
-│       ├── fluent-bit/
-│       ├── keda/
-│       ├── kube-prometheus-stack/
-│       ├── nfs-provisioner/
-│       ├── metallb/
-│       ├── reloader/
-│       ├── traefik/
-│       └── victoria-logs/
-│
-├── 📁 .renovate/                 # Renovate configuration
-├── 📄 .renovaterc.json5
-└── 📄 README.md
 ```
 
 ### Design Principles
