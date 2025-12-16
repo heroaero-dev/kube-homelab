@@ -103,7 +103,7 @@ data:
 
     - Apps:
         - Homepage:
-            icon: homepage.svg
+            icon: homepage.png
             href: https://heroaero.dev
             description: This Dashboard (Dev)
             namespace: dev
