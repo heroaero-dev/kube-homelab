@@ -21,11 +21,11 @@ spec:
         image: n8nio/n8n:2.0.2
         resources:
           requests:
-            memory: "192Mi"
-            cpu: "50m"
-          limits:
             memory: "384Mi"
-            cpu: "500m"
+            cpu: "100m"
+          limits:
+            memory: "1Gi"
+            cpu: "1000m"
         envFrom:
         - secretRef:
             name: postgresql
@@ -38,6 +38,10 @@ spec:
             value: "true"
           - name: WEBHOOK_URL
             value: "https://n8n.heroaero.dev"
+          - name: N8N_TRUST_PROXY
+            value: "true"
+          - name: N8N_RUNNERS_ENABLED
+            value: "true"
         ports:
         - containerPort: 5678
         volumeMounts:
