@@ -96,7 +96,7 @@ data:
             app: kube-prometheus-stack
         - Traefik:
             icon: traefik.svg
-            href: https://traefik.heroaero.info
+            href: https://traefik.heroaero.dev
             description: Ingress Controller
             namespace: traefik
             app: traefik
