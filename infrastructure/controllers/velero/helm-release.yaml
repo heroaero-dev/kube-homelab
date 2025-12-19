@@ -48,3 +48,4 @@ spec:
             - staging
             - dev
           storageLocation: default
+          defaultVolumesToFsBackup: true
