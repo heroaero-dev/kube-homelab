@@ -1,0 +1,50 @@
+apiVersion: helm.toolkit.fluxcd.io/v2
+kind: HelmRelease
+metadata:
+  name: velero
+spec:
+  interval: 1h
+  chart:
+    spec:
+      chart: velero
+      reconcileStrategy: ChartVersion
+      sourceRef:
+        kind: HelmRepository
+        name: velero
+      version: 8.1.0
+  values:
+    upgradeCRDs: false
+    initContainers:
+      - name: velero-plugin-for-aws
+        image: velero/velero-plugin-for-aws:v1.11.0
+        volumeMounts:
+          - mountPath: /target
+            name: plugins
+    configuration:
+      backupStorageLocation:
+        - name: default
+          provider: aws
+          bucket: aerodev-homelabber
+          config:
+            region: us-west-2
+      volumeSnapshotLocation:
+        - name: default
+          provider: aws
+          config:
+            region: us-west-2
+    credentials:
+      useSecret: true
+      existingSecret: velero-aws-credentials
+    deployNodeAgent: true
+    nodeAgent:
+      podVolumePath: /var/lib/kubelet/pods
+    schedules:
+      daily-backup:
+        disabled: false
+        schedule: "0 3 * * *"
+        template:
+          ttl: 168h
+          includedNamespaces:
+            - staging
+            - dev
+          storageLocation: default
