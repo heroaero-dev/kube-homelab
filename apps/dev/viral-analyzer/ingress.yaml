@@ -1,0 +1,23 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: viral-analyzer
+  annotations:
+    cert-manager.io/cluster-issuer: letsencrypt-prod
+spec:
+  ingressClassName: traefik
+  rules:
+    - host: viral-analyzer.heroaero.dev
+      http:
+        paths:
+          - path: /
+            pathType: Prefix
+            backend:
+              service:
+                name: viral-analyzer
+                port:
+                  number: 80
+  tls:
+    - hosts:
+        - viral-analyzer.heroaero.dev
+      secretName: viral-analyzer-tls

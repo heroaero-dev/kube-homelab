@@ -9,3 +9,4 @@ resources:
   - ./postgresql
   - ./portainer
   - ./n8n
+  - ./viral-analyzer
