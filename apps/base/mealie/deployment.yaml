@@ -14,15 +14,15 @@ spec:
       labels:
         app: mealie
     spec:
-      #securityContext:
-      #fsGroup: 911
-      #runAsUser: 911
-        #runAsGroup: 911
+      securityContext:
+        fsGroup: 911
+        runAsUser: 911
+        runAsGroup: 911
       containers:
       - image: ghcr.io/mealie-recipes/mealie:v3.7.0
         name: mealie
-          # securityContext:
-          #allowPrivilegeEscalation: false
+        securityContext:
+          allowPrivilegeEscalation: false
         resources:
           requests:
             memory: "256Mi"
