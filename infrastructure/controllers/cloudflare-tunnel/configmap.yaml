@@ -18,7 +18,7 @@ data:
       - hostname: md.heroaero.dev
         service: http://traefik.traefik.svc.cluster.local:80
       - hostname: vault.heroaero.dev
-        service: http://10.6.6.117:8089
+        service: http://traefik.traefik.svc.cluster.local:80
       - hostname: jelly.heroaero.dev
         service: http://traefik.traefik.svc.cluster.local:80
       - hostname: vlog.heroaero.dev
