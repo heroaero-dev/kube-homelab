@@ -102,6 +102,18 @@ data:
             app: traefik
 
     - Apps:
+        - Vaultwarden:
+            icon: vaultwarden.svg
+            href: https://vault.heroaero.dev
+            description: Password Manager
+            namespace: dev
+            app: vaultwarden
+        - Viral-analyzer:
+            icon: viral.svg
+            href: https://viral.heroaero.dev
+            description: A.I video analyzer
+            namespace: dev
+            app: viral-analyzer
         - Homepage:
             icon: homepage.png
             href: https://heroaero.dev
