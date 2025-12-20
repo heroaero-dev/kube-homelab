@@ -42,6 +42,8 @@ spec:
             value: "true"
           - name: N8N_RUNNERS_ENABLED
             value: "true"
+          - name: N8N_BLOCK_ENV_ACCESS_IN_NODE
+            value: "false"
         ports:
         - containerPort: 5678
         volumeMounts:

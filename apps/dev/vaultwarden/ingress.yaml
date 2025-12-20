@@ -1,0 +1,23 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: vaultwarden
+  annotations:
+    cert-manager.io/cluster-issuer: letsencrypt-production
+spec:
+  ingressClassName: traefik
+  tls:
+    - hosts:
+        - vault.heroaero.dev
+      secretName: vaultwarden-tls
+  rules:
+    - host: vault.heroaero.dev
+      http:
+        paths:
+          - backend:
+              service:
+                name: vaultwarden
+                port:
+                  number: 9110
+            path: /
+            pathType: Prefix

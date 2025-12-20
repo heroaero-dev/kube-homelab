@@ -10,3 +10,4 @@ resources:
   - ./portainer
   - ./n8n
   - ./viral-analyzer
+  - ./vaultwarden
