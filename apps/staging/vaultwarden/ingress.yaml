@@ -8,10 +8,10 @@ spec:
   ingressClassName: traefik
   tls:
     - hosts:
-        - vault.heroaero.dev
+        - vault.heroaero.info
       secretName: vaultwarden-tls
   rules:
-    - host: vault.heroaero.dev
+    - host: vault.heroaero.info
       http:
         paths:
           - backend:
