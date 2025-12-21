@@ -21,3 +21,9 @@ spec:
           secretKeyRef:
             name: cloudflare-api-token
             key: apiKey
+    domainFilters:
+      - heroaero.dev
+    sources:
+        - ingress
+        - service
+    policy: sync
