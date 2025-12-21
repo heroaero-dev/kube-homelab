@@ -2,6 +2,7 @@ apiVersion: helm.toolkit.fluxcd.io/v2
 kind: HelmRelease
 metadata:
   name: twingate
+  namespace: network
 spec:
   chart:
     spec:
