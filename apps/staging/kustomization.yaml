@@ -3,7 +3,6 @@ kind: Kustomization
 resources:
   - ./linkding
   - ./mealie
-  - ./portainer
   - ./homepage
   - ./postgresql
   - ./jellyfin

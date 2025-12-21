@@ -7,7 +7,6 @@ resources:
   - ./linkding
   - ./mealie
   - ./postgresql
-  - ./portainer
   - ./n8n
   - ./viral-analyzer
   - ./vaultwarden
