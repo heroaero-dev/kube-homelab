@@ -28,15 +28,48 @@ spec:
 
   values:
     alertmanager:
+      config:
+        global:
+          resolve_timeout: 5m
+        route:
+          receiver: pushover
+          group_by: ['alertname', 'namespace']
+          group_wait: 30s
+          group_interval: 5m
+          repeat_interval: 3h
+          routes:
+            # Silence kubeadm false positives
+            - receiver: 'null'
+              matchers:
+                - alertname =~ "etcd.*"
+            - receiver: 'null'
+              matchers:
+                - alertname = "KubeProxyDown"
+            - receiver: 'null'
+              matchers:
+                - alertname =~ "KubeSchedulerDown|KubeControllerManagerDown"
+            - receiver: 'null'
+              matchers:
+                - alertname = "Watchdog"
+            - receiver: 'null'
+              matchers:
+                - alertname = "InfoInhibitor"
+        receivers:
+          - name: 'null'
+          - name: pushover
+            pushover_configs:
+              - user_key_file: /etc/alertmanager/secrets/alertmanager-pushover/PUSHOVER_USER_KEY
+                token_file: /etc/alertmanager/secrets/alertmanager-pushover/PUSHOVER_API_TOKEN
+                send_resolved: true
+                priority: '{{ if eq .Status "firing" }}1{{ else }}-1{{ end }}'
+                title: '[{{ .Status | toUpper }}] {{ .CommonLabels.alertname }}'
+                message: |-
+                  {{ range .Alerts }}
+                  {{ if .Annotations.description }}{{ .Annotations.description }}{{ else if .Annotations.summary }}{{ .Annotations.summary }}{{ else }}Alert: {{ .Labels.alertname }}{{ end }}
+                  {{ end }}
       alertmanagerSpec:
-        alertmanagerConfigMatcherStrategy:
-          type: None
-        alertmanagerConfigSelector:
-          matchLabels:
-            alertmanagerConfig: enabled
-        alertmanagerConfigNamespaceSelector:
-          matchLabels:
-            alertmanagerConfig: enabled
+        secrets:
+          - alertmanager-pushover
     grafana:
       enabled: true
       podAnnotations:
