@@ -19,7 +19,7 @@ spec:
         runAsUser: 911
         runAsGroup: 911
       containers:
-      - image: ghcr.io/mealie-recipes/mealie:v3.7.0
+      - image: ghcr.io/mealie-recipes/mealie:v3.8.0
         name: mealie
         securityContext:
           allowPrivilegeEscalation: false
