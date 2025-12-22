@@ -1,55 +1,49 @@
 {
-  $schema: "https://docs.renovatebot.com/renovate-schema.json",
-
+  $schema: 'https://docs.renovatebot.com/renovate-schema.json',
   extends: [
-    "config:recommended",
-    "docker:enableMajor",
-    "helpers:pinGitHubActionDigests",
-
-    // your modules
-    "github>heroaero-dev/kube-homelab//.renovate/autoMerge.json5",
-    "github>heroaero-dev/kube-homelab//.renovate/customManagers.json5",
-    "github>heroaero-dev/kube-homelab//.renovate/groups.json5",
-    "github>heroaero-dev/kube-homelab//.renovate/semanticCommits.json5",
-    "github>heroaero-dev/kube-homelab//.renovate/labels.json5",
-
-    ":automergeBranch",
-    ":disableRateLimiting",
-    ":dependencyDashboard",
-    ":semanticCommits",
-    ":timezone(America/Los_Angeles)"
+    'config:recommended',
+    'docker:enableMajor',
+    'helpers:pinGitHubActionDigests',
+    'github>heroaero-dev/kube-homelab//.renovate/autoMerge.json5',
+    'github>heroaero-dev/kube-homelab//.renovate/customManagers.json5',
+    'github>heroaero-dev/kube-homelab//.renovate/groups.json5',
+    'github>heroaero-dev/kube-homelab//.renovate/semanticCommits.json5',
+    'github>heroaero-dev/kube-homelab//.renovate/labels.json5',
+    ':automergeBranch',
+    ':disableRateLimiting',
+    ':dependencyDashboard',
+    ':semanticCommits',
+    ':timezone(America/Los_Angeles)',
   ],
-
-  dependencyDashboardTitle: "Renovate Dashboard 🤖",
-
+  dependencyDashboardTitle: 'Renovate Dashboard 🤖',
   suppressNotifications: [
-    "prEditedNotification",
-    "prIgnoreNotification"
+    'prEditedNotification',
+    'prIgnoreNotification',
   ],
-
   ignorePaths: [
-    "**/*.sops.*"
+    '**/*.sops.*',
   ],
-
-  // Ensure full repo scanning
   enabledManagers: [
-    "flux",
-    "helm-values",
-    "helmv3",
-    "kubernetes",
-    "regex",
-    "github-actions"
+    'flux',
+    'helm-values',
+    'helmv3',
+    'kubernetes',
+    'custom.regex',
+    'github-actions',
   ],
-
   flux: {
-    managerFilePatterns: ["\\.yaml(?:\\.j2)?$"]
+    managerFilePatterns: [
+      '\\.yaml(?:\\.j2)?$',
+    ],
   },
-
-  "helm-values": {
-    managerFilePatterns: ["\\.yaml(?:\\.j2)?$"]
+  'helm-values': {
+    managerFilePatterns: [
+      '\\.yaml(?:\\.j2)?$',
+    ],
   },
-
   kubernetes: {
-    managerFilePatterns: ["\\.yaml(?:\\.j2)?$"]
-  }
+    managerFilePatterns: [
+      '\\.yaml(?:\\.j2)?$',
+    ],
+  },
 }
