@@ -10,10 +10,10 @@ spec:
   ingressClassName: traefik
   tls:
     - hosts:
-      - md.heroaero.dev
-      secretName: obsidian-tls 
+      - notes.heroaero.dev
+      secretName: obsidian-tls
   rules:
-    - host: md.heroaero.dev
+    - host: notes.heroaero.dev
       http:
         paths:
           - backend:
