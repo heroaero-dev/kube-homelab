@@ -18,7 +18,7 @@ spec:
         - securityContext:
             allowPrivilegeEscalation: false
           name: obsidian
-          image: linuxserver/obsidian:1.10.3
+          image: linuxserver/obsidian:1.10.6
           ports:
             - containerPort: 3000
           env:
