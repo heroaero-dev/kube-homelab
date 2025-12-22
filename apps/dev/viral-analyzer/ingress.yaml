@@ -3,7 +3,7 @@ kind: Ingress
 metadata:
   name: viral-analyzer
   annotations:
-    cert-manager.io/cluster-issuer: letsencrypt-prod
+    cert-manager.io/cluster-issuer: letsencrypt-production
 spec:
   ingressClassName: traefik
   rules:
