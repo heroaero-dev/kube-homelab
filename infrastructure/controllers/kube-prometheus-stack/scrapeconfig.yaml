@@ -17,11 +17,20 @@ spec:
   # --- List of targets you want to monitor ---
   staticConfigs:
     - targets:
+        # Dev services
         - https://heroaero.dev
         - https://jelly.heroaero.dev
         - https://link.heroaero.dev
         - https://vault.heroaero.dev
         - https://mealie.heroaero.dev
+        - https://n8n.heroaero.dev
+        - https://notes.heroaero.dev
+        - https://home.heroaero.dev
+        - https://atuin.heroaero.dev
+        - https://viral.heroaero.dev
+        - https://vlog.heroaero.dev
+        - https://port.heroaero.dev
+        # Monitoring
         - https://graf.heroaero.info
 
   # --- Relabeling magic to send each target to blackbox-exporter ---
