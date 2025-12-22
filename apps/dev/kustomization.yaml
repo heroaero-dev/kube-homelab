@@ -10,3 +10,4 @@ resources:
   - ./n8n
   - ./viral-analyzer
   - ./vaultwarden
+  - ./obsidian

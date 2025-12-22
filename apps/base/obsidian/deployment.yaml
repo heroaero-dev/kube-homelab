@@ -1,0 +1,37 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: obsidian
+  labels:
+    app: obsidian
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: obsidian
+  template:
+    metadata:
+      labels:
+        app: obsidian
+    spec:
+      containers:
+        - securityContext:
+            allowPrivilegeEscalation: false
+          name: obsidian
+          image: linuxserver/obsidian:1.10.3
+          ports:
+            - containerPort: 3000
+          env:
+            - name: PUID
+              value: "1000"
+            - name: PGID
+              value: "1000"
+            - name: TZ
+              value: "America/Los_Angeles"
+          volumeMounts:
+            - name: obsidian
+              mountPath: /config
+      volumes:
+        - name: obsidian
+          persistentVolumeClaim:
+            claimName: obsidian

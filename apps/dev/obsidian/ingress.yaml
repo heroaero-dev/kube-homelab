@@ -1,0 +1,25 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: obsidian
+  annotations:
+    cert-manager.io/cluster-issuer: letsencrypt-production
+    # Optional: force redirect https
+    nginx.ingress.kubernetes.io/force-ssl-redirect: "true"
+spec:
+  ingressClassName: traefik
+  tls:
+    - hosts:
+      - md.heroaero.dev
+      secretName: obsidian-tls 
+  rules:
+    - host: md.heroaero.dev
+      http:
+        paths:
+          - backend:
+              service:
+                name: obsidian
+                port:
+                  number: 3001
+            path: /
+            pathType: Prefix
