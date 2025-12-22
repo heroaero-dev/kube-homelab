@@ -22,17 +22,23 @@
 
   dependencyDashboardTitle: "Renovate Dashboard 🤖",
 
-  // THIS IS THE MISSING PIECE
-  dependencyDashboardApproval: true,
-
   suppressNotifications: [
     "prEditedNotification",
     "prIgnoreNotification"
   ],
 
   ignorePaths: [
-    "**/*.sops.*",
-    "**/resources/**"
+    "**/*.sops.*"
+  ],
+
+  // Ensure full repo scanning
+  enabledManagers: [
+    "flux",
+    "helm-values",
+    "helmv3",
+    "kubernetes",
+    "regex",
+    "github-actions"
   ],
 
   flux: {

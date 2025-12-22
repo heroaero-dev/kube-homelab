@@ -1,10 +1,15 @@
 {
   "packageRules": [
     {
-      "matchUpdateTypes": ["minor", "patch"],
+      "description": "Auto-merge patch and minor updates",
+      "matchUpdateTypes": ["patch", "minor"],
       "automerge": true,
-      "automergeType": "branch",
-      "prCreation": "update-only"
+      "automergeType": "branch"
+    },
+    {
+      "description": "Require dashboard approval for major updates",
+      "matchUpdateTypes": ["major"],
+      "dependencyDashboardApproval": true
     }
   ]
 }
