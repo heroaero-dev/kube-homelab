@@ -15,7 +15,7 @@ data:
         service: http://traefik.traefik.svc.cluster.local:80
       - hostname: port.heroaero.dev
         service: http://traefik.traefik.svc.cluster.local:80
-      - hostname: md.heroaero.dev
+      - hostname: notes.heroaero.dev
         service: http://traefik.traefik.svc.cluster.local:80
       - hostname: vault.heroaero.dev
         service: http://traefik.traefik.svc.cluster.local:80
