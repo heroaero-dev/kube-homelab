@@ -215,7 +215,7 @@ data:
         label: Local
         latitude: 40.7128
         longitude: -74.0060
-        timezone: America/New_York
+        timezone: America/Los_Angeles
         units: imperial
         cache: 5
 
