@@ -213,8 +213,8 @@ data:
 
     - openmeteo:
         label: Local
-        latitude: 40.7128
-        longitude: -74.0060
+        latitude: 33.99
+        longitude: -117.34
         timezone: America/Los_Angeles
         units: imperial
         cache: 5
