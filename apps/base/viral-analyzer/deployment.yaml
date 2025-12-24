@@ -9,11 +9,11 @@ spec:
   selector:
     matchLabels:
       app: viral-analyzer
-      tier: frontend
   template:
     metadata:
       labels:
         app: viral-analyzer
+        tier: frontend
     spec:
       securityContext:
         runAsNonRoot: true
