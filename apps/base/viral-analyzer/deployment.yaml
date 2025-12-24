@@ -15,8 +15,6 @@ spec:
         app: viral-analyzer
         tier: frontend
     spec:
-      nodeSelector:
-        kubernetes.io/arch: amd64
       securityContext:
         runAsNonRoot: true
         runAsUser: 1001
