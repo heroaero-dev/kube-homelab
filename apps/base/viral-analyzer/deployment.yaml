@@ -24,7 +24,7 @@ spec:
         fsGroup: 1001
       containers:
         - name: viral-analyzer
-          image: ghcr.io/heroaero-dev/viral-analyzer:latest
+          image: ghcr.io/heroaero-dev/viral-analyzer:v0.1.0
           ports:
             - containerPort: 3000
           env:
