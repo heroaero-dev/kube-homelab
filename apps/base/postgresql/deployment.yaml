@@ -11,6 +11,7 @@ spec:
     metadata:
       labels:
         app: postgres
+        tier: db
     spec:
       containers:
       - name: postgres
@@ -29,12 +30,11 @@ spec:
             name: postgresql
         env:
         - name: PGDATA
-          value: /var/lib/postgresql/data/db   
+          value: /var/lib/postgresql/data/db
         volumeMounts:
         - name: pgdata
-          mountPath: /var/lib/postgresql/data  
+          mountPath: /var/lib/postgresql/data
       volumes:
       - name: pgdata
         persistentVolumeClaim:
           claimName: postgres-pvc
-

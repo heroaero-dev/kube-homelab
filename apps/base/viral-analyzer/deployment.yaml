@@ -9,6 +9,7 @@ spec:
   selector:
     matchLabels:
       app: viral-analyzer
+      tier: frontend
   template:
     metadata:
       labels:
